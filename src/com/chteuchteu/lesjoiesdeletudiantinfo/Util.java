@@ -23,6 +23,8 @@ import android.widget.Toast;
 public final class Util {
 	private Util() { }
 	
+	public static String sdFolderName = "lesJoiesdelEtudiantInfo";
+	
 	@SuppressLint("InlinedApi")
 	public static int getActionBarHeight(Context c) {
 		final TypedArray styledAttributes = c.getTheme().obtainStyledAttributes(
@@ -96,7 +98,7 @@ public final class Util {
 		String path = "";
 		if (withFilePrefix)
 			path += "file://";
-		path += Environment.getExternalStorageDirectory().getPath() + "/lesJoiesDuSysadmin" + Util.getFileName(g) + ".gif";
+		path += Environment.getExternalStorageDirectory().getPath() + "/" + sdFolderName + Util.getFileName(g) + ".gif";
 		return path;
 	}
 	
@@ -117,7 +119,7 @@ public final class Util {
 	}
 	
 	public static void clearCache(Context c) {
-		String path = Environment.getExternalStorageDirectory().toString() + "/lesJoiesDuSysadmin/";
+		String path = Environment.getExternalStorageDirectory().toString() + "/" + sdFolderName +"/";
 		File dir = new File(path);
 		File files[] = dir.listFiles();
 		int crt = 0;
@@ -140,7 +142,7 @@ public final class Util {
 	
 	public static void removeOldGifs(List<Gif> l) {
 		if (l != null && l.size() > 10) {
-			String path = Environment.getExternalStorageDirectory().toString() + "/lesJoiesDuSysadmin/";
+			String path = Environment.getExternalStorageDirectory().toString() + "/" + sdFolderName + "/";
 			File dir = new File(path);
 			File files[] = dir.listFiles();
 			if (files != null) {
@@ -165,7 +167,7 @@ public final class Util {
 	}
 	
 	public static void createLJDSYDirectory() {
-		File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/lesJoiesDuSysadmin/");
+		File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/" + sdFolderName + "/");
 		if (!dir.exists())
 			dir.mkdirs();
 	}

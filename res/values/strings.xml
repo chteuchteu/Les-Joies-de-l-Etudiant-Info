@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Les Joies du Sysadmin</string>
+    <string name="app_name">Les Joies de l\'Etudiant Info</string>
 	<string name="about">les Joies du Sysadmin est un tumblr\ninspiré des Joies du Code\n\ncette application n\'est pas officielle\n\nles gifs présentés dans cette application sont proposés par la communauté sur lesjoiesdusysadmin.tumblr.com</string>
 	<string name="first_disclaimer">bienvenue dans l\'application non officielle des Joies du Sysadmin !\n\nveuillez patienter pendant le premier telechargement des gifs\n\n</string>
 	<string name="first_disclaimer_notifs"> activer les notifications</string>

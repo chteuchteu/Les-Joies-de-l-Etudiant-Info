@@ -37,8 +37,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="lesjoiesdusysadmin.tumblr.com"
-                   android:pathPrefix="/post/"
+                    android:host="lesjoiesdeletudiantinfo.com"
+                    android:pathPrefix="/"
                     android:scheme="http" />
             </intent-filter>
         </activity>

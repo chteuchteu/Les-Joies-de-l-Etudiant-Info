@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -46,20 +45,15 @@ import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.tjeannin.apprate.AppRate;
-import com.tumblr.jumblr.JumblrClient;
-import com.tumblr.jumblr.types.Blog;
-import com.tumblr.jumblr.types.Post;
-import com.tumblr.jumblr.types.TextPost;
 
 public class Activity_Main extends Activity {
-	public String		rssUrl = "http://lesjoiesdusysadmin.tumblr.com/rss";
-	public String		tumblrUrl = "lesjoiesdusysadmin.tumblr.com";
+	public String		rssUrl = "http://lesjoiesdeletudiantinfo.com/feed/";
 	private ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 	private static Activity 	a;
 	public static List<Gif> 	gifs;
 	public boolean		loaded;
 	private MenuItem	notifs;
-	private int			actionBarColor = Color.argb(210, 0, 82, 156);
+	private int			actionBarColor = Color.argb(185, 6, 124, 64);
 	private boolean	notifsEnabled;
 	public static int 	scrollY;
 	
@@ -81,7 +75,7 @@ public class Activity_Main extends Activity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 			actionBar.setHomeButtonEnabled(false);
 		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setTitle(" Les Joies du Sysadmin");
+		actionBar.setTitle(" Les Joies de l'Etudiant Info");
 		actionBar.setBackgroundDrawable(new ColorDrawable(actionBarColor));
 		final TypedArray styledAttributes = getApplicationContext().getTheme().obtainStyledAttributes(
 				new int[] { android.R.attr.actionBarSize });
@@ -285,45 +279,13 @@ public class Activity_Main extends Activity {
 			}
 		}
 		
+		public void manualPublishProgress(int n) {
+			publishProgress(n);
+		}
+		
 		@Override
 		protected Void doInBackground(String... url) {
-			List<Gif> l = new ArrayList<Gif>(); // new gifs
-			try {
-				JumblrClient client = new JumblrClient("3TRQZe87tlv3jXHuF9AHtDydThIn1hDijFNLLhGEULVRRHpM3q", "4BpchUIeOkEFMAkNGiIKjpgG8sLVliKA8cgIFSa3JuQ6Ta0qNd");
-				Blog blog = client.blogInfo(tumblrUrl);
-				int nbPosts = blog.getPostCount();
-				boolean getPosts = true;
-				int offset = 0;
-				int progress = 0;
-				while (getPosts) {
-					Map<String, Object> params = new HashMap<String, Object>();
-					params.put("limit", 20);
-					params.put("offset", offset);
-					List<Post> posts = client.blogPosts(tumblrUrl, params);
-					
-					for (Post p : posts) {
-						TextPost tp = (TextPost) p;
-						Gif g = new Gif();
-						g.date = Util.GMTDateToFrench3(tp.getDateGMT());
-						g.nom = tp.getTitle();
-						g.state = Gif.ST_EMPTY;
-						g.urlArticle = tp.getPostUrl();
-						// <p><p class="c1"><img alt="image" src="http://i.imgur.com/49DLfGd.gif"/></p>
-						g.urlGif = Util.getSrcAttribute(tp.getBody());
-						if (g.isValide() && Util.getGifFromGifUrl(gifs, g.urlGif) == null)
-							l.add(g);
-						progress++;
-						int percentage = (int)progress*100/nbPosts;
-						if (percentage > 100)
-							percentage = 100;
-						publishProgress(percentage);
-					}
-					if (posts.size() > 0)
-						offset += 20;
-					else
-						getPosts = false;
-				}
-			} catch (Exception ex) { ex.printStackTrace(); }
+			List<Gif> l = RSSReader.parse(rssUrl, this);
 			
 			if (l.size() == 0)
 				return null;

@@ -56,7 +56,7 @@ public class Activity_Gif extends Activity {
 	
 	public static boolean		finishedDownload = true;
 	public static boolean		loaded = false;
-	public int					actionBarColor = Color.argb(210, 0, 82, 156); // (210, 44, 62, 80);
+	public int					actionBarColor = Color.argb(185, 6, 124, 64);
 	
 	public static int			SWITCH_NEXT = 1;
 	public static int			SWITCH_PREVIOUS = 0;
@@ -96,7 +96,7 @@ public class Activity_Gif extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setTitle(" Les Joies du Sysadmin");
+		actionBar.setTitle(" Les Joies de l'Etudiant Info");
 		int c = actionBarColor;
 		actionBar.setBackgroundDrawable(new ColorDrawable(c));
 		final TypedArray styledAttributes = getApplicationContext().getTheme().obtainStyledAttributes(
@@ -254,53 +254,54 @@ public class Activity_Gif extends Activity {
 	}
 	
 	private void switchGif(int which) {
-		if (textsShown) {
-			if (gif != null) {
-				stopThread();
-				int pos = Util.getGifPos(gif, Activity_Main.gifs);
-				int targetPos = 0;
-				if (which == SWITCH_NEXT)
-					targetPos = pos + 1;
-				else
-					targetPos = pos - 1;
+		if (!textsShown) {
+			toggleTexts();
+			return;
+		}
+		if (gif != null) {
+			stopThread();
+			int pos = Util.getGifPos(gif, Activity_Main.gifs);
+			int targetPos = 0;
+			if (which == SWITCH_NEXT)
+				targetPos = pos + 1;
+			else
+				targetPos = pos - 1;
+			
+			if (targetPos >= 0 && targetPos < Activity_Main.gifs.size()) {
+				gif = Activity_Main.gifs.get(targetPos);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+					updateSharingIntent();
+				finishedDownload = false;
+				loaded = false;
+				getIntent().putExtra("url", gif.urlGif);
 				
-				if (targetPos >= 0 && targetPos < Activity_Main.gifs.size()) {
-					gif = Activity_Main.gifs.get(targetPos);
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-						updateSharingIntent();
-					finishedDownload = false;
-					loaded = false;
-					
-					if (wv.getVisibility() == View.VISIBLE) {
-						AlphaAnimation an = new AlphaAnimation(1.0f, 0.0f);
-						an.setDuration(150);
-						an.setAnimationListener(new AnimationListener() {
-							@Override public void onAnimationStart(Animation animation) { }
-							@Override public void onAnimationRepeat(Animation animation) { }
-							@Override
-							public void onAnimationEnd(Animation animation) {
-								wv.setVisibility(View.GONE);
-							}
-						});
-						wv.startAnimation(an);
-					}
-					
-					loadGif();
-					
-					pos = targetPos;
-					
-					if (!finishedDownload) {
-						if (targetPos == 0)	a.findViewById(R.id.gif_precedent).setVisibility(View.GONE);
-						else			a.findViewById(R.id.gif_precedent).setVisibility(View.VISIBLE);
-						if (targetPos == Activity_Main.gifs.size()-1)		a.findViewById(R.id.gif_suivant).setVisibility(View.GONE);
-						else			a.findViewById(R.id.gif_suivant).setVisibility(View.VISIBLE);
-						((TextView) a.findViewById(R.id.header_nom)).setText(gif.nom);
-					}
+				if (wv.getVisibility() == View.VISIBLE) {
+					AlphaAnimation an = new AlphaAnimation(1.0f, 0.0f);
+					an.setDuration(150);
+					an.setAnimationListener(new AnimationListener() {
+						@Override public void onAnimationStart(Animation animation) { }
+						@Override public void onAnimationRepeat(Animation animation) { }
+						@Override
+						public void onAnimationEnd(Animation animation) {
+							wv.setVisibility(View.GONE);
+						}
+					});
+					wv.startAnimation(an);
+				}
+				
+				loadGif();
+				
+				pos = targetPos;
+				
+				if (!finishedDownload) {
+					if (targetPos == 0)	a.findViewById(R.id.gif_precedent).setVisibility(View.GONE);
+					else			a.findViewById(R.id.gif_precedent).setVisibility(View.VISIBLE);
+					if (targetPos == Activity_Main.gifs.size()-1)		a.findViewById(R.id.gif_suivant).setVisibility(View.GONE);
+					else			a.findViewById(R.id.gif_suivant).setVisibility(View.VISIBLE);
+					((TextView) a.findViewById(R.id.header_nom)).setText(gif.nom);
 				}
 			}
 		}
-		else
-			toggleTexts();
 	}
 	
 	private void stopThread() {

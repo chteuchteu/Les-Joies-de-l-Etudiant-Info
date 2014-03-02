@@ -1,9 +1,6 @@
 package com.chteuchteu.lesjoiesdeletudiantinfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,10 +14,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.support.v4.app.NotificationCompat;
-
-import com.tumblr.jumblr.JumblrClient;
-import com.tumblr.jumblr.types.Post;
-import com.tumblr.jumblr.types.TextPost;
 
 public class NotificationService extends Service {
 	private WakeLock mWakeLock;
@@ -51,7 +44,7 @@ public class NotificationService extends Service {
 		
 		@Override
 		protected Void doInBackground(Void... params) {
-			l = new ArrayList<Gif>();
+			/*l = new ArrayList<Gif>();
 			try {
 				JumblrClient client = new JumblrClient("3TRQZe87tlv3jXHuF9AHtDydThIn1hDijFNLLhGEULVRRHpM3q", "4BpchUIeOkEFMAkNGiIKjpgG8sLVliKA8cgIFSa3JuQ6Ta0qNd");
 				boolean getPosts = true;
@@ -91,7 +84,7 @@ public class NotificationService extends Service {
 					else
 						nbUnseenGifs++;
 				}
-			}
+			}*/
 			
 			return null;
 		}
@@ -111,10 +104,10 @@ public class NotificationService extends Service {
 				String title;
 				String text;
 				if (nbUnseenGifs > 1) {
-					title = "Les Joies du Sysadmin";
+					title = "Les Joies de l'Etudiant Info";
 					text = nbUnseenGifs + " nouveaux gifs !";
 				} else {
-					title = "Les Joies du Sysadmin";
+					title = "Les Joies de l'Etudiant Info";
 					text = "1 nouveau gif !";
 				}
 				

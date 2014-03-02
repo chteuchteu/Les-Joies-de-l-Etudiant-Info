@@ -62,7 +62,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
-		android:background="#153C5A" >
+		android:background="#067C40" >
 
 		<LinearLayout
 			android:id="@+id/actions_left"
@@ -78,7 +78,7 @@
 				android:paddingLeft="30dp"
 				android:paddingRight="10dp"
 				android:paddingTop="10dp"
-				android:shadowColor="#000000"
+				android:shadowColor="#003000"
 				android:shadowDx="0"
 				android:shadowDy="2"
 				android:shadowRadius="2"
@@ -101,7 +101,7 @@
 				android:paddingLeft="10dp"
 				android:paddingRight="30dp"
 				android:paddingTop="10dp"
-				android:shadowColor="#000000"
+				android:shadowColor="#003000"
 				android:shadowDx="0"
 				android:shadowDy="2"
 				android:shadowRadius="2"
