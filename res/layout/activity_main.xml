@@ -13,10 +13,54 @@
 		android:layout_margin="20dp"
 		android:visibility="gone" />
 
-	<ListView
-		android:id="@+id/gifs_list"
+	<LinearLayout 
+		android:id="@+id/ll_main"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent" />
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+		
+		<LinearLayout
+			android:id="@+id/countdown_container"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:background="#067C40"
+			android:gravity="center"
+			android:padding="10dp"
+			android:visibility="gone">
+			
+				<TextView
+					android:id="@+id/countdown_txt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="#ffffff"
+					android:shadowColor="#003000"
+					android:shadowDx="0"
+					android:shadowDy="1"
+					android:shadowRadius="1"
+					android:text="@string/countdown_txt"
+					android:layout_marginRight="20dp"
+					android:paddingTop="3dp" />
+			
+				<TextView
+					android:id="@+id/countdown"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="#ffffff"
+					android:shadowColor="#003000"
+					android:shadowDx="0"
+					android:shadowDy="2"
+					android:shadowRadius="2"
+					android:text="00:00:00"
+					android:textSize="30sp" />
+		</LinearLayout>
+		
+		<ListView
+			android:id="@+id/gifs_list"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" />
+		
+	</LinearLayout>
 
 	<LinearLayout
 		android:id="@+id/first_disclaimer"

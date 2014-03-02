@@ -54,30 +54,35 @@ public final class R {
         public static final int navigation_refresh_dark=0x7f020007;
     }
     public static final class id {
-        public static final int about=0x7f0b0013;
+        public static final int about=0x7f0b0017;
         public static final int actions_container=0x7f0b0007;
         public static final int actions_left=0x7f0b0008;
         public static final int actions_right=0x7f0b000a;
-        public static final int ascii_loading=0x7f0b0010;
-        public static final int disclaimer_notifs=0x7f0b0011;
-        public static final int disclaimer_valider=0x7f0b0012;
-        public static final int first_disclaimer=0x7f0b000f;
+        public static final int ascii_loading=0x7f0b0014;
+        public static final int countdown=0x7f0b0011;
+        public static final int countdown_container=0x7f0b000f;
+        public static final int countdown_txt=0x7f0b0010;
+        public static final int disclaimer_notifs=0x7f0b0015;
+        public static final int disclaimer_valider=0x7f0b0016;
+        public static final int first_disclaimer=0x7f0b0013;
         public static final int gif_container=0x7f0b0000;
         public static final int gif_precedent=0x7f0b0009;
         public static final int gif_suivant=0x7f0b000b;
-        public static final int gifs_list=0x7f0b000e;
+        public static final int gifs_list=0x7f0b0012;
         public static final int header_nom=0x7f0b0005;
         public static final int header_nom_container=0x7f0b0004;
         public static final int kitkat_actionbar_notifs=0x7f0b000c;
-        public static final int line_a=0x7f0b0015;
-        public static final int line_b=0x7f0b0014;
+        public static final int line_a=0x7f0b0019;
+        public static final int line_b=0x7f0b0018;
+        public static final int ll_main=0x7f0b000e;
         public static final int main_container=0x7f0b000d;
-        public static final int menu_about=0x7f0b0019;
-        public static final int menu_clear_cache=0x7f0b001b;
-        public static final int menu_openwebsite=0x7f0b0016;
-        public static final int menu_refresh=0x7f0b0018;
-        public static final int menu_share=0x7f0b0017;
-        public static final int notifications=0x7f0b001a;
+        public static final int menu_about=0x7f0b001d;
+        public static final int menu_clear_cache=0x7f0b001f;
+        public static final int menu_contact=0x7f0b0020;
+        public static final int menu_openwebsite=0x7f0b001a;
+        public static final int menu_refresh=0x7f0b001c;
+        public static final int menu_share=0x7f0b001b;
+        public static final int notifications=0x7f0b001e;
         public static final int onclick_catcher=0x7f0b0006;
         public static final int pb=0x7f0b0003;
         public static final int wv=0x7f0b0002;
@@ -99,6 +104,7 @@ public final class R {
         public static final int cache_emptied_none=0x7f050013;
         public static final int cache_emptied_plur=0x7f050011;
         public static final int cache_emptied_sing=0x7f050012;
+        public static final int countdown_txt=0x7f050015;
         public static final int first_disclaimer=0x7f050003;
         public static final int first_disclaimer_notifs=0x7f050004;
         public static final int first_disclaimer_valider=0x7f050005;
@@ -106,6 +112,7 @@ public final class R {
          */
         public static final int ga_trackingId=0x7f050000;
         public static final int menu_clear_cache=0x7f05000b;
+        public static final int menu_contact=0x7f050014;
         public static final int menu_notifications=0x7f050009;
         public static final int menu_share=0x7f05000a;
         public static final int open_site=0x7f050006;

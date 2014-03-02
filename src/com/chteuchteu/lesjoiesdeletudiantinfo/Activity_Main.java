@@ -1,5 +1,8 @@
 package com.chteuchteu.lesjoiesdeletudiantinfo;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,10 +20,13 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +54,7 @@ import com.tjeannin.apprate.AppRate;
 
 public class Activity_Main extends Activity {
 	public String		rssUrl = "http://lesjoiesdeletudiantinfo.com/feed/";
+	public String		countDownWS = "http://lesjoiesdeletudiantinfo.com/wp-admin/admin-ajax.php?action=getDeltaNext";
 	private ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 	private static Activity 	a;
 	public static List<Gif> 	gifs;
@@ -56,8 +63,8 @@ public class Activity_Main extends Activity {
 	private int			actionBarColor = Color.argb(185, 6, 124, 64);
 	private boolean	notifsEnabled;
 	public static int 	scrollY;
-	
 	private ListView 	lv_gifs;
+	private CountDownTimer cdt;
 	
 	@SuppressLint({ "InlinedApi", "NewApi" })
 	@Override
@@ -99,8 +106,9 @@ public class Activity_Main extends Activity {
 		else
 			findViewById(R.id.kitkat_actionbar_notifs).setVisibility(View.GONE);
 		if (contentPaddingTop != 0) {
+			findViewById(R.id.ll_main).setPadding(0, contentPaddingTop, 0, 0);
 			lv_gifs.setClipToPadding(false);
-			lv_gifs.setPadding(0, contentPaddingTop, 0, contentPaddingBottom);
+			lv_gifs.setPadding(0, 0, 0, contentPaddingBottom);
 		}
 		
 		a = this;
@@ -178,6 +186,12 @@ public class Activity_Main extends Activity {
 		});
 		
 		launchUpdateIfNeeded();
+		
+		// Countdown
+		setFont((TextView) findViewById(R.id.countdown_txt), "RobotoCondensed-Regular.ttf");
+		setFont((TextView) findViewById(R.id.countdown), "RobotoCondensed-Light.ttf");
+		if (cdt == null)
+			new CountdownLauncher().execute();
 	}
 	
 	private void enableNotifs() {
@@ -339,6 +353,55 @@ public class Activity_Main extends Activity {
 		}
 	}
 	
+	public class CountdownLauncher extends AsyncTask<Void, Integer, Void> {
+		private int nbSeconds;
+		
+		public CountdownLauncher() { }
+		
+		@Override
+		protected void onPreExecute() { }
+		
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			String source = "";
+			try {
+				URL adresse = new URL(countDownWS);
+				BufferedReader in = new BufferedReader(new InputStreamReader(adresse.openStream()));
+				String inputLine;
+				while ((inputLine = in.readLine()) != null) {
+					source += inputLine;
+				}
+				in.close();
+				
+				if (!source.equals(""))
+					nbSeconds = Integer.parseInt(source);
+			} catch (Exception e) { Log.e("", e.toString()); }
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			if (nbSeconds != 0) {
+				findViewById(R.id.countdown_container).setVisibility(View.VISIBLE);
+				
+				cdt = new CountDownTimer(nbSeconds * 1000, 1000) {
+					public void onTick(long millisUntilFinished) {
+						int[] formatted = Util.getCountdownFromSeconds((int) millisUntilFinished / 1000);
+						
+						((TextView) findViewById(R.id.countdown)).setText(formatted[0] + ":" + Util.formatNumber(formatted[1]) + ":" + Util.formatNumber(formatted[2]));
+					}
+					
+					public void onFinish() {
+						Util.setPref(a, "lastGifsListUpdate", "doitnow");
+						new parseFeed().execute("");
+					}
+				}
+				.start();
+			}
+		}
+	}
+	
 	private void itemClick(View view) {
 		TextView label = (TextView) view.findViewById(R.id.line_a);
 		Intent intent = new Intent(Activity_Main.this, Activity_Gif.class);
@@ -445,6 +508,10 @@ public class Activity_Main extends Activity {
 			case R.id.menu_clear_cache:
 				Util.clearCache(this);
 				return true;
+			case R.id.menu_contact:
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://lesjoiesdeletudiantinfo.com/contact/"));
+				startActivity(browserIntent);
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -453,6 +520,10 @@ public class Activity_Main extends Activity {
 	public void setFont(ViewGroup g, String font) {
 		Typeface mFont = Typeface.createFromAsset(getAssets(), font);
 		setFont(g, mFont);
+	}
+	public void setFont(TextView tv, String font) {
+		Typeface mFont = Typeface.createFromAsset(getAssets(), font);
+		tv.setTypeface(mFont);
 	}
 	public void setFont(ViewGroup group, Typeface font) {
 		int count = group.getChildCount();

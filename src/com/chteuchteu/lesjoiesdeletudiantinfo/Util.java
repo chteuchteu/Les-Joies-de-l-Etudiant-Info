@@ -72,6 +72,23 @@ public final class Util {
 		return "";
 	}
 	
+	public static int[] getCountdownFromSeconds(int seconds) {
+		int hours = (int) seconds / 3600;
+		int remainder = (int) seconds - hours * 3600;
+		int mins = remainder / 60;
+		remainder = remainder - mins * 60;
+		int secs = remainder;
+		
+		int[] ints = {hours , mins , secs};
+		return ints;
+	}
+	
+	public static String formatNumber(int number) {
+		if (number < 10)
+			return "0" + number;
+		return "" + number;
+	}
+	
 	public static String GMTDateToFrench3(String gmtDate) {
 		try {
 			// 2012-06-18 08:47:37 GMT
