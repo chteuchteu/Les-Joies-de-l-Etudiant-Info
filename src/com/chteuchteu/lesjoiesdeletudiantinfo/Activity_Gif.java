@@ -20,7 +20,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -410,7 +409,7 @@ public class Activity_Gif extends Activity {
 				
 				byte data[] = new byte[4096];
 				long total = 0;
-				int count; // TODO
+				int count;
 				
 				Util.getGif(Activity_Main.gifs, gif.nom).state = Gif.ST_DOWNLOADING;
 				
@@ -449,28 +448,23 @@ public class Activity_Gif extends Activity {
 			pb.setVisibility(View.GONE);
 			
 			finishedDownload = true;
-			Log.v("", "1");
+			
 			if (gif == null && Activity_Main.gifs != null && pos != -1)
 				gif = Activity_Main.gifs.get(pos);
-
-			Log.v("", "2");
+			
 			int pos = Util.getGifPos(gif, Activity_Main.gifs);
 			if (pos == 0)	a.findViewById(R.id.gif_precedent).setVisibility(View.GONE);
 			else			a.findViewById(R.id.gif_precedent).setVisibility(View.VISIBLE);
 			if (pos == Activity_Main.gifs.size()-1)		a.findViewById(R.id.gif_suivant).setVisibility(View.GONE);
 			else			a.findViewById(R.id.gif_suivant).setVisibility(View.VISIBLE);
 			((TextView) a.findViewById(R.id.header_nom)).setText(gif.nom);
-
-			Log.v("", "3");
+			
 			if (photo != null && photo.exists()) {
 				loaded = true;
 				try {
-					Log.v("", "4");
 					Util.getGif(Activity_Main.gifs, gif.nom).state = Gif.ST_COMPLETE;
-					Log.v("", "4.5");
 					//Util.saveGifs(a, Activity_Main.gifs);
-
-					Log.v("", "5");
+					
 					wv.setVisibility(View.GONE);
 					String imagePath = Util.getEntiereFileName(gif, true);
 					wv.loadDataWithBaseURL("", Util.getHtml(imagePath), "text/html","utf-8", "");
