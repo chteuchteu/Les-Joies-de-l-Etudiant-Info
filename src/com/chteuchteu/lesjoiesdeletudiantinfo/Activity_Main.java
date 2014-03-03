@@ -32,6 +32,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -66,7 +68,7 @@ public class Activity_Main extends Activity {
 	private ListView 	lv_gifs;
 	private CountDownTimer cdt;
 	private LinearLayout countdown_container;
-	private static int countdown_container_height = 108;
+	private static int countdown_container_height = 120;
 	
 	private boolean debug = true;
 	
@@ -77,7 +79,7 @@ public class Activity_Main extends Activity {
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		setContentView(R.layout.activity_main);
 		
-		lv_gifs = (ListView) findViewById(R.id.gifs_list);
+		lv_gifs = (ListView) findViewById(R.id.list);
 		
 		int contentPaddingTop = 0;
 		int contentPaddingBottom = 0;
@@ -195,7 +197,9 @@ public class Activity_Main extends Activity {
 		
 		// Countdown
 		setFont((TextView) findViewById(R.id.countdown_txt), "RobotoCondensed-Regular.ttf");
-		setFont((TextView) findViewById(R.id.countdown), "RobotoCondensed-Light.ttf");
+		setFont((TextView) findViewById(R.id.countdown_hh), "RobotoCondensed-Regular.ttf");
+		setFont((TextView) findViewById(R.id.countdown_mm), "RobotoCondensed-Regular.ttf");
+		setFont((TextView) findViewById(R.id.countdown_ss), "RobotoCondensed-Regular.ttf");
 		if (cdt == null)
 			new CountdownLauncher().execute();
 	}
@@ -325,7 +329,7 @@ public class Activity_Main extends Activity {
 			pb.setVisibility(View.GONE);
 			if (needsUpdate) {
 				// Populate listview
-				ListView l = (ListView) findViewById(R.id.gifs_list);
+				ListView l = (ListView) findViewById(R.id.list);
 				list.clear();
 				HashMap<String,String> item;
 				for (Gif g : gifs) {
@@ -341,7 +345,7 @@ public class Activity_Main extends Activity {
 				View v = l.getChildAt(0);
 				int top = (v == null) ? 0 : v.getTop();
 				
-				SimpleAdapter sa = new SimpleAdapter(Activity_Main.this, list, R.layout.gifs_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+				SimpleAdapter sa = new SimpleAdapter(Activity_Main.this, list, R.layout.list_item, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 				l.setAdapter(sa);
 				
 				l.setOnItemClickListener(new OnItemClickListener() {
@@ -386,23 +390,35 @@ public class Activity_Main extends Activity {
 			return null;
 		}
 		
-		@SuppressLint("NewApi")
 		@Override
 		protected void onPostExecute(Void result) {
 			if (nbSeconds != 0) {
-				findViewById(R.id.countdown_container).setVisibility(View.VISIBLE);
-				lv_gifs.setPadding(0, lv_gifs.getPaddingTop() + countdown_container_height, 0, lv_gifs.getPaddingBottom());
+				countdown_container.setVisibility(View.INVISIBLE);
+				final ViewTreeObserver observer = countdown_container.getViewTreeObserver();
+				observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+					@SuppressWarnings("deprecation")
+					@Override
+					public void onGlobalLayout() {
+						countdown_container.setVisibility(View.VISIBLE);
+						countdown_container_height = findViewById(R.id.countdown_container).getHeight();
+						lv_gifs.setPadding(0, lv_gifs.getPaddingTop() + countdown_container_height, 0, lv_gifs.getPaddingBottom());
+						observer.removeGlobalOnLayoutListener(this);
+					}
+				});
 				
-				Log.v("", "fvp = " + lv_gifs.getFirstVisiblePosition());
-				if (lv_gifs.getFirstVisiblePosition() > 5) {
+				if (lv_gifs.getFirstVisiblePosition() < 5) {
 					lv_gifs.smoothScrollToPosition(0);
+					lv_gifs.setSelectionFromTop(0, 0);
 				}
 				
+				if (cdt != null)	cdt.cancel();
 				cdt = new CountDownTimer(nbSeconds * 1000, 1000) {
 					public void onTick(long millisUntilFinished) {
 						int[] formatted = Util.getCountdownFromSeconds((int) millisUntilFinished / 1000);
 						
-						((TextView) findViewById(R.id.countdown)).setText(formatted[0] + ":" + Util.formatNumber(formatted[1]) + ":" + Util.formatNumber(formatted[2]));
+						((TextView) findViewById(R.id.countdown_hh)).setText(formatted[0] + "");
+						((TextView) findViewById(R.id.countdown_mm)).setText(Util.formatNumber(formatted[1]));
+						((TextView) findViewById(R.id.countdown_ss)).setText(Util.formatNumber(formatted[2]));
 					}
 					
 					public void onFinish() {
@@ -419,7 +435,7 @@ public class Activity_Main extends Activity {
 		TextView label = (TextView) view.findViewById(R.id.line_a);
 		Intent intent = new Intent(Activity_Main.this, Activity_Gif.class);
 		intent.putExtra("name", label.getText().toString());
-		scrollY = ((ListView) findViewById(R.id.gifs_list)).getFirstVisiblePosition();
+		scrollY = ((ListView) findViewById(R.id.list)).getFirstVisiblePosition();
 		Gif g = Util.getGif(gifs, label.getText().toString());
 		if (g != null) {
 			intent.putExtra("url", g.urlGif);
@@ -435,7 +451,7 @@ public class Activity_Main extends Activity {
 			if (li.size() > 0) {
 				gifs = li;
 				
-				ListView l = (ListView) findViewById(R.id.gifs_list);
+				ListView l = (ListView) findViewById(R.id.list);
 				list.clear();
 				HashMap<String,String> item;
 				for (Gif g : gifs) {
@@ -446,7 +462,7 @@ public class Activity_Main extends Activity {
 						list.add(item);
 					}
 				}
-				SimpleAdapter sa = new SimpleAdapter(Activity_Main.this, list, R.layout.gifs_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+				SimpleAdapter sa = new SimpleAdapter(Activity_Main.this, list, R.layout.list_item, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 				l.setAdapter(sa);
 				
 				l.setOnItemClickListener(new OnItemClickListener() {
