@@ -60,11 +60,15 @@ public class Activity_Main extends Activity {
 	public static List<Gif> 	gifs;
 	public boolean		loaded;
 	private MenuItem	notifs;
-	private int			actionBarColor = Color.argb(185, 6, 124, 64);
+	private int			actionBarColor = Color.argb(200, 6, 124, 64);
 	private boolean	notifsEnabled;
 	public static int 	scrollY;
 	private ListView 	lv_gifs;
 	private CountDownTimer cdt;
+	private LinearLayout countdown_container;
+	private static int countdown_container_height = 108;
+	
+	private boolean debug = true;
 	
 	@SuppressLint({ "InlinedApi", "NewApi" })
 	@Override
@@ -89,6 +93,8 @@ public class Activity_Main extends Activity {
 		contentPaddingTop += (int) styledAttributes.getDimension(0, 0);
 		styledAttributes.recycle();
 		
+		countdown_container = (LinearLayout) findViewById(R.id.countdown_container);
+		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			int id = getResources().getIdentifier("config_enableTranslucentDecor", "bool", "android");
 			if (id != 0 && getResources().getBoolean(id)) { // Translucent available
@@ -100,15 +106,15 @@ public class Activity_Main extends Activity {
 				notifBarBG.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, getStatusBarHeight()));
 				notifBarBG.setVisibility(View.VISIBLE);
 				contentPaddingTop += getStatusBarHeight();
-				contentPaddingBottom += 150;
+				contentPaddingBottom = 150;
 			}
 		}
 		else
 			findViewById(R.id.kitkat_actionbar_notifs).setVisibility(View.GONE);
 		if (contentPaddingTop != 0) {
-			findViewById(R.id.ll_main).setPadding(0, contentPaddingTop, 0, 0);
+			((RelativeLayout.LayoutParams) countdown_container.getLayoutParams()).setMargins(0, contentPaddingTop, 0, 0);
 			lv_gifs.setClipToPadding(false);
-			lv_gifs.setPadding(0, 0, 0, contentPaddingBottom);
+			lv_gifs.setPadding(0, contentPaddingTop, 0, contentPaddingBottom);
 		}
 		
 		a = this;
@@ -380,10 +386,17 @@ public class Activity_Main extends Activity {
 			return null;
 		}
 		
+		@SuppressLint("NewApi")
 		@Override
 		protected void onPostExecute(Void result) {
 			if (nbSeconds != 0) {
 				findViewById(R.id.countdown_container).setVisibility(View.VISIBLE);
+				lv_gifs.setPadding(0, lv_gifs.getPaddingTop() + countdown_container_height, 0, lv_gifs.getPaddingBottom());
+				
+				Log.v("", "fvp = " + lv_gifs.getFirstVisiblePosition());
+				if (lv_gifs.getFirstVisiblePosition() > 5) {
+					lv_gifs.smoothScrollToPosition(0);
+				}
 				
 				cdt = new CountDownTimer(nbSeconds * 1000, 1000) {
 					public void onTick(long millisUntilFinished) {
@@ -564,12 +577,14 @@ public class Activity_Main extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
+		if (!debug)
+			EasyTracker.getInstance(this).activityStart(this);
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStart(this);
+		if (!debug)
+			EasyTracker.getInstance(this).activityStart(this);
 	}
 }

@@ -56,7 +56,7 @@ public class Activity_Gif extends Activity {
 	
 	public static boolean		finishedDownload = true;
 	public static boolean		loaded = false;
-	public int					actionBarColor = Color.argb(185, 6, 124, 64);
+	public int					actionBarColor = Color.argb(200, 6, 124, 64);
 	
 	public static int			SWITCH_NEXT = 1;
 	public static int			SWITCH_PREVIOUS = 0;
