@@ -43,7 +43,6 @@ public final class Util {
 			if (s.split("::").length > 1)	g.urlArticle = s.split("::")[1];
 			if (s.split("::").length > 2)	g.urlGif = s.split("::")[2];
 			if (s.split("::").length > 3)	g.date = s.split("::")[3];
-			if (s.split("::").length > 4)	g.state = Integer.parseInt(s.split("::")[4]);
 			li.add(g);
 		}
 		return li;
@@ -54,9 +53,9 @@ public final class Util {
 		int i=0;
 		for (Gif g : gifs) {
 			if (i != gifs.size()-1)
-				str = str + g.nom + "::" + g.urlArticle + "::" + g.urlGif + "::" + g.date + "::" + g.state + ";;";
+				str = str + g.nom + "::" + g.urlArticle + "::" + g.urlGif + "::" + g.date + ";;";
 			else
-				str = str + g.nom + "::" + g.urlArticle + "::" + g.urlGif + "::" + g.date + "::" + g.state;
+				str = str + g.nom + "::" + g.urlArticle + "::" + g.urlGif + "::" + g.date;
 			i++;
 		}
 		setPref(a, "gifs", str);
