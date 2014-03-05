@@ -48,7 +48,7 @@ public final class Util {
 		return li;
 	}
 	
-	public static void saveGifs(Activity a, List<Gif> gifs) {
+	public static void saveGifs(Context c, List<Gif> gifs) {
 		String str = "";
 		int i=0;
 		for (Gif g : gifs) {
@@ -58,7 +58,7 @@ public final class Util {
 				str = str + g.nom + "::" + g.urlArticle + "::" + g.urlGif + "::" + g.date;
 			i++;
 		}
-		setPref(a, "gifs", str);
+		setPref(c, "gifs", str);
 	}
 	
 	public static String getSrcAttribute(String html) {
@@ -212,6 +212,10 @@ public final class Util {
 			}
 		}
 		return true;
+	}
+	
+	public static void setPref(Context c, String key, String value) {
+		setPref((Activity) c, key, value);
 	}
 	
 	public static void setPref(Activity a, String key, String value) {

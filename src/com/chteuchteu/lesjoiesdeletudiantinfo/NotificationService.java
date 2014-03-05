@@ -16,7 +16,9 @@ import android.os.PowerManager.WakeLock;
 import android.support.v4.app.NotificationCompat;
 
 public class NotificationService extends Service {
-	private WakeLock mWakeLock;
+	private WakeLock 	mWakeLock;
+	private String		rssUrl = "http://lesjoiesdeletudiantinfo.com/feed/";
+	private Context		c;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -29,11 +31,15 @@ public class NotificationService extends Service {
 		mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "com.chteuchteu.lesjoiesdeletudiantinfo");
 		mWakeLock.acquire();
 		
+		
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 		if (!cm.getBackgroundDataSetting()) {
 			stopSelf();
 			return;
 		}
+		
+		c = this;
+		
 		// do the actual work, in a separate thread
 		new PollTask().execute();
 	}
@@ -44,37 +50,7 @@ public class NotificationService extends Service {
 		
 		@Override
 		protected Void doInBackground(Void... params) {
-			/*l = new ArrayList<Gif>();
-			try {
-				JumblrClient client = new JumblrClient("3TRQZe87tlv3jXHuF9AHtDydThIn1hDijFNLLhGEULVRRHpM3q", "4BpchUIeOkEFMAkNGiIKjpgG8sLVliKA8cgIFSa3JuQ6Ta0qNd");
-				boolean getPosts = true;
-				int offset = 0;
-				while (getPosts) {
-					Map<String, Object> feedparams = new HashMap<String, Object>();
-					feedparams.put("limit", 20);
-					feedparams.put("offset", offset);
-					List<Post> posts = client.blogPosts("lesjoiesdusysadmin.tumblr.com", feedparams);
-					
-					for (Post p : posts) {
-						TextPost tp = (TextPost) p;
-						Gif g = new Gif();
-						//g.date = Util.GMTDateToFrench3(tp.getDateGMT());
-						g.nom = tp.getTitle();
-						g.state = Gif.ST_EMPTY;
-						g.urlArticle = tp.getPostUrl();
-						// <p><p class="c1"><img alt="image" src="http://i.imgur.com/49DLfGd.gif"/></p>
-						g.urlGif = Util.getSrcAttribute(tp.getBody());
-						l.add(g);
-					}
-					if (posts.size() > 0)
-						offset += 20;
-					else
-						getPosts = false;
-				}
-			} catch (Exception ex) { ex.printStackTrace(); }
-			
-			if (l.size() == 0)
-				return null;
+			l = RSSReader.parse(rssUrl, null);
 			
 			String lastUnseenGif = getPref("lastViewed");
 			if (l.size() > 0) {
@@ -84,7 +60,10 @@ public class NotificationService extends Service {
 					else
 						nbUnseenGifs++;
 				}
-			}*/
+			}
+			
+			if (nbUnseenGifs > 0)
+				Util.saveGifs(c, l);
 			
 			return null;
 		}
@@ -94,23 +73,19 @@ public class NotificationService extends Service {
 			// Check if there are new gifs, and if a notification for them hasn't been dispayed yet
 			boolean notif = (nbUnseenGifs > 0 && 
 					(getPref("lastNotifiedGif").equals("") 
-							|| !getPref("lastNotifiedGif").equals("") && l.size() > 0 && !l.get(0).urlGif.equals(getPref("lastNotifiedGif"))));
+							|| l.size() > 0 && !l.get(0).urlGif.equals(getPref("lastNotifiedGif"))));
 			
 			if (notif) {
 				// Save the last gif
 				if (l.size() > 0)
 					setPref("lastNotifiedGif", l.get(0).urlGif);
 				
-				String title;
+				String title = "Les Joies de l'Etudiant Info";
 				String text;
-				if (nbUnseenGifs > 1) {
-					title = "Les Joies de l'Etudiant Info";
+				if (nbUnseenGifs > 1)
 					text = nbUnseenGifs + " nouveaux gifs !";
-				} else {
-					title = "Les Joies de l'Etudiant Info";
+				else
 					text = "1 nouveau gif !";
-				}
-				
 				
 				NotificationCompat.Builder builder =
 						new NotificationCompat.Builder(NotificationService.this)
