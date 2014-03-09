@@ -73,7 +73,7 @@ public class Activity_Gif extends Activity {
 		setContentView(R.layout.activity_gif);
 		
 		fromWeb = false;
-		final Intent intent = getIntent();
+		/*final Intent intent = getIntent();
 		final String action = intent.getAction();
 		if (action != null && action.equals(Intent.ACTION_VIEW)) {
 			fromWeb = true;
@@ -90,7 +90,7 @@ public class Activity_Gif extends Activity {
 				fromWeb = false;
 				Toast.makeText(this, "Impossible d'afficher ce gif depuis le web...", Toast.LENGTH_LONG).show();
 			}
-		}
+		}*/
 		
 		int contentPaddingTop = 0;
 		ActionBar actionBar = getActionBar();
