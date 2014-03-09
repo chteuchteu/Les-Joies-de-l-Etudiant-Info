@@ -70,7 +70,7 @@ public class Activity_Main extends Activity {
 	private LinearLayout countdown_container;
 	private static int countdown_container_height = 120;
 	
-	private boolean debug = true;
+	public static boolean debug = true;
 	
 	@SuppressLint({ "InlinedApi", "NewApi" })
 	@Override
@@ -601,6 +601,6 @@ public class Activity_Main extends Activity {
 	public void onStop() {
 		super.onStop();
 		if (!debug)
-			EasyTracker.getInstance(this).activityStart(this);
+			EasyTracker.getInstance(this).activityStop(this);
 	}
 }

@@ -91,14 +91,12 @@ public class Activity_Gif extends Activity {
 				Toast.makeText(this, "Impossible d'afficher ce gif depuis le web...", Toast.LENGTH_LONG).show();
 			}
 		}*/
-		
 		int contentPaddingTop = 0;
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setTitle(" Les Joies de l'Etudiant Info");
-		int c = actionBarColor;
-		actionBar.setBackgroundDrawable(new ColorDrawable(c));
+		actionBar.setBackgroundDrawable(new ColorDrawable(actionBarColor));
 		final TypedArray styledAttributes = getApplicationContext().getTheme().obtainStyledAttributes(
 				new int[] { android.R.attr.actionBarSize });
 		contentPaddingTop += (int) styledAttributes.getDimension(0, 0);
@@ -121,7 +119,6 @@ public class Activity_Gif extends Activity {
 			lp.setMargins(0, contentPaddingTop, 0, 0);
 			findViewById(R.id.actions_container).setLayoutParams(lp);
 		}
-		
 		a = this;
 		Intent thisIntent = getIntent();
 		String url = "";
@@ -130,24 +127,19 @@ public class Activity_Gif extends Activity {
 		if (thisIntent != null && thisIntent.getExtras() != null
 				&& thisIntent.getExtras().containsKey("url"))
 			url = thisIntent.getExtras().getString("url");
-		
 		if (!fromWeb || gif == null)
 			gif = Util.getGifFromGifUrl(Activity_Main.gifs, url);
-		
 		pos = Util.getGifPos(gif, Activity_Main.gifs);
-		
 		old_gif = gif;
 		
 		if (url != null)
 			restoreActivity();
-		
 		TextView header_nom = (TextView) findViewById(R.id.header_nom);
 		header_nom.setText(gif.nom);
 		if (header_nom.getText().toString().length() / 32 > 4) // nb lines
 			header_nom.setLineSpacing(-10, 1);
 		else if (header_nom.getText().toString().length() / 32 > 6)
 			header_nom.setLineSpacing(-25, 1);
-		
 		wv = (WebView) findViewById(R.id.wv);
 		wv.getSettings().setAllowFileAccess(true);
 		wv.getSettings().setJavaScriptEnabled(true);
@@ -199,7 +191,6 @@ public class Activity_Gif extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
 		if (gif == null && Activity_Main.gifs != null && pos != -1)
 			gif = Activity_Main.gifs.get(pos);
 		
@@ -209,7 +200,10 @@ public class Activity_Gif extends Activity {
 	
 	@Override
 	protected void onPause() {
+		// Another activity comes into the foreground
 		super.onPause();
+		
+		stopThread();
 		
 		gif = null;
 	}
@@ -223,10 +217,8 @@ public class Activity_Gif extends Activity {
 				downloadGifTh = new downloadGif();
 				downloadGifTh.execute();
 			} else {
-				if (gif.state != Gif.ST_COMPLETE) {
+				if (gif.state != Gif.ST_COMPLETE)
 					gif.state = Gif.ST_COMPLETE;
-					Util.saveGifs(a, Activity_Main.gifs);
-				}
 				String imagePath = Util.getEntiereFileName(gif, true);
 				wv.loadDataWithBaseURL("", Util.getHtml(imagePath), "text/html","utf-8", "");
 				
@@ -499,7 +491,7 @@ public class Activity_Gif extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		stopThread();
+		//stopThread();
 		finish();
 		setTransition("leftToRight");
 	}
@@ -508,13 +500,9 @@ public class Activity_Gif extends Activity {
 	protected void onStop() {
 		super.onStop();
 		
-		EasyTracker.getInstance(this).activityStart(this);
+		//stopThread();
 		
-		if (downloadGifTh != null) {
-			try {
-				downloadGifTh.cancel(false);
-			} catch (Exception ignored) { }
-		}
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 	
 	@Override
@@ -633,6 +621,7 @@ public class Activity_Gif extends Activity {
 		if (gif == null && Activity_Main.gifs != null && pos != -1)
 			gif = Activity_Main.gifs.get(pos);
 		
-		EasyTracker.getInstance(this).activityStart(this);
+		if (!Activity_Main.debug)
+			EasyTracker.getInstance(this).activityStart(this);
 	}
 }
