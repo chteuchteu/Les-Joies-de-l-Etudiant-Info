@@ -18,7 +18,6 @@ import android.support.v4.app.NotificationCompat;
 public class NotificationService extends Service {
 	private WakeLock 	mWakeLock;
 	private String		rssUrl = "http://lesjoiesdeletudiantinfo.com/feed/";
-	private Context		c;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -37,8 +36,6 @@ public class NotificationService extends Service {
 			stopSelf();
 			return;
 		}
-		
-		c = this;
 		
 		// do the actual work, in a separate thread
 		new PollTask().execute();
@@ -63,7 +60,7 @@ public class NotificationService extends Service {
 			}
 			
 			if (nbUnseenGifs > 0)
-				Util.saveGifs(c, l);
+				Util.saveGifs(getApplicationContext(), l);
 			
 			return null;
 		}
