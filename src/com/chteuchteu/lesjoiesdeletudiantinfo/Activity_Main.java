@@ -181,8 +181,8 @@ public class Activity_Main extends Activity {
 		.setNeutralButton(getString(R.string.vote_notnow), null);
 		new AppRate(this)
 		.setCustomDialog(builder)
-		.setMinDaysUntilPrompt(10)
-		.setMinLaunchesUntilPrompt(10)
+		.setMinDaysUntilPrompt(5)
+		.setMinLaunchesUntilPrompt(5)
 		.init();
 		
 		lv_gifs.post(new Runnable() {
