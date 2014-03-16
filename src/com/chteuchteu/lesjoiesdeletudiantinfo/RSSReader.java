@@ -82,8 +82,11 @@ public class RSSReader {
 			if (thread != null)
 				thread.manualPublishProgress(100);
 		} catch (SAXException ex) {
+			Log.e("", ex.toString());
 		} catch (IOException ex) {
+			Log.e("", ex.toString());
 		} catch (ParserConfigurationException ex) {
+			Log.e("", ex.toString());
 		}
 		return l;
 	}
