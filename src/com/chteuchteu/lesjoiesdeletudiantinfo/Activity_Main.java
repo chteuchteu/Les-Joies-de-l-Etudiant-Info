@@ -200,6 +200,7 @@ public class Activity_Main extends Activity {
 		setFont((TextView) findViewById(R.id.countdown_hh), "RobotoCondensed-Regular.ttf");
 		setFont((TextView) findViewById(R.id.countdown_mm), "RobotoCondensed-Regular.ttf");
 		setFont((TextView) findViewById(R.id.countdown_ss), "RobotoCondensed-Regular.ttf");
+		
 		if (cdt == null)
 			new CountdownLauncher().execute();
 	}
@@ -315,6 +316,7 @@ public class Activity_Main extends Activity {
 				return null;
 			if (gifs == null || (gifs != null && gifs.size() == 0) || (gifs != null && l.size() != gifs.size()) || (gifs != null && gifs.size() > 0 && !l.get(0).equals(gifs.get(0)))) {
 				needsUpdate = true;
+				gifs = new ArrayList<Gif>();
 				for (int i=l.size()-1; i>=0; i--) {
 					gifs.add(0, l.get(i));
 				}
