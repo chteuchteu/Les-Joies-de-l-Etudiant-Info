@@ -215,7 +215,14 @@ public final class Util {
 	}
 	
 	public static void setPref(Context c, String key, String value) {
-		setPref((Activity) c, key, value);
+		if (value.equals(""))
+			removePref(c, key);
+		else {
+			SharedPreferences prefs = c.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString(key, value);
+			editor.commit();
+		}
 	}
 	
 	public static void setPref(Activity a, String key, String value) {
@@ -231,6 +238,13 @@ public final class Util {
 	
 	public static void removePref(Activity a, String key) {
 		SharedPreferences prefs = a.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.remove(key);
+		editor.commit();
+	}
+	
+	public static void removePref(Context c, String key) {
+		SharedPreferences prefs = c.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.remove(key);
 		editor.commit();
