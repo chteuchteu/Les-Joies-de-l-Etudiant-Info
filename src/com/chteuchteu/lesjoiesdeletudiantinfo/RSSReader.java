@@ -71,7 +71,6 @@ public class RSSReader {
 					org.jsoup.nodes.Document c = Jsoup.parse(content);
 					Elements pngs = c.select("img[src$=.gif]");
 					g.urlGif = pngs.get(0).attr("src");
-					Log.v("", g.urlGif);
 					l.add(g);
 					
 					int percentage = i * 100 / nodes.getLength() / 2 + 50;

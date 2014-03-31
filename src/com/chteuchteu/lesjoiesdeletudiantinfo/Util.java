@@ -17,7 +17,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.Toast;
 
 public final class Util {
@@ -94,7 +93,6 @@ public final class Util {
 			// 2014-01-09 16:57:58 GMT
 			//SimpleDateFormat dfGMT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
 			SimpleDateFormat dfGMT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z", Locale.ENGLISH);
-			Log.v("gmtDate", gmtDate);
 			dfGMT.parse(gmtDate);
 			SimpleDateFormat dfFrench = new SimpleDateFormat("d/MM", Locale.FRANCE);
 			return dfFrench.format(dfGMT.getCalendar().getTime());
