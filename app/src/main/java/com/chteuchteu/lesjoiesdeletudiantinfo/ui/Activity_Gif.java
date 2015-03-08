@@ -3,7 +3,6 @@ package com.chteuchteu.lesjoiesdeletudiantinfo.ui;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -72,13 +71,6 @@ public class Activity_Gif extends GifActivity {
 		webView.setHorizontalFadingEdgeEnabled(false);
 		webView.setBackgroundColor(0x00000000);
 
-		int marginTop = 0;
-		marginTop += Util.getActionBarHeight(this);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-			marginTop += Util.getActionBarHeight(this) / 2;
-		marginTop += 35; // Actions
-		findViewById(R.id.wv_container).setPadding(0, marginTop, 0, 0);
-		
 		TextView gif_precedent = (TextView) findViewById(R.id.gif_precedent);
 		TextView gif_suivant = (TextView) findViewById(R.id.gif_suivant);
 		if (pos == 0)
@@ -95,9 +87,9 @@ public class Activity_Gif extends GifActivity {
 		});
 		findViewById(R.id.onclick_catcher).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { toggleTexts(); } });
 		
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.header_nom), Util.Fonts.CustomFont.RobotoCondensed_Light);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.gif_precedent), Util.Fonts.CustomFont.RobotoCondensed_Light);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.gif_suivant), Util.Fonts.CustomFont.RobotoCondensed_Light);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.header_nom), Util.Fonts.CustomFont.Roboto_Light);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.gif_precedent), Util.Fonts.CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.gif_suivant), Util.Fonts.CustomFont.Roboto_Regular);
 	}
 	
 	@Override

@@ -3,4 +3,7 @@
     <color name="white">#ffffff</color>
 
 	<color name="colorPrimary">#388E3C</color>
+
+	<color name="transparent">#00000000</color>
+	<color name="semitransparent">#11000000</color>
 </resources>

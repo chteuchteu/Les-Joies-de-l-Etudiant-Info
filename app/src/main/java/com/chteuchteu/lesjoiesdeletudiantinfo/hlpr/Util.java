@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Environment;
 import android.view.View;
@@ -25,16 +24,7 @@ import java.util.List;
 
 public final class Util {
 	public static String sdFolderName = "lesJoiesdelEtudiantInfo";
-	
-	@SuppressLint("InlinedApi")
-	public static int getActionBarHeight(Context c) {
-		final TypedArray styledAttributes = c.getTheme().obtainStyledAttributes(
-				new int[]{android.R.attr.actionBarSize});
-		int height = (int) styledAttributes.getDimension(0, 0);
-		styledAttributes.recycle();
-		return height;
-	}
-	
+
 	public static List<Gif> getGifs(Context context) {
 		String[] sg = Util.getPref(context, "gifs").split(";;");
 		List<Gif> list = new ArrayList<>();
@@ -213,9 +203,8 @@ public final class Util {
 	public static final class Fonts {
 		/* ENUM Custom Fonts */
 		public enum CustomFont {
-			RobotoCondensed_Regular("RobotoCondensed-Regular.ttf"),
-			RobotoCondensed_Light("RobotoCondensed-Light.ttf"),
-			Futura("Futura.ttf");
+			Roboto_Regular("Roboto-Regular.ttf"),
+			Roboto_Light("Roboto-Light.ttf");
 
 			final String file;
 			private CustomFont(String fileName) { this.file = fileName; }
@@ -256,12 +245,5 @@ public final class Util {
 	public static void saveLastViewed(Context context) {
 		if (GifFoo.getInstance().getFirstGif() != null)
 			Util.setPref(context, "lastViewed", GifFoo.getInstance().getFirstGif().getArticleUrl());
-	}
-
-	public static int getStatusBarHeight(Context context) {
-		int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-		if (resourceId > 0)
-			return context.getResources().getDimensionPixelSize(resourceId);
-		return 0;
 	}
 }

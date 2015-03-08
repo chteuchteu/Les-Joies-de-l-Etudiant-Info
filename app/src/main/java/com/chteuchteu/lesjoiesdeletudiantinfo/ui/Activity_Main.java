@@ -113,14 +113,15 @@ public class Activity_Main extends GifActivity implements IActivity_Main {
 					lv_gifs.setSelectionFromTop(scrollY, 0);
 			}
 		});
-		
+
+		refreshListView();
 		launchUpdateIfNeeded();
 		
 		// Countdown
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.countdown_txt), Util.Fonts.CustomFont.RobotoCondensed_Regular);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.countdown_hh), Util.Fonts.CustomFont.RobotoCondensed_Regular);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.countdown_mm), Util.Fonts.CustomFont.RobotoCondensed_Regular);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.countdown_ss), Util.Fonts.CustomFont.RobotoCondensed_Regular);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.countdown_txt), Util.Fonts.CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.countdown_hh), Util.Fonts.CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.countdown_mm), Util.Fonts.CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.countdown_ss), Util.Fonts.CustomFont.Roboto_Regular);
 		
 		launchCountDownTimer();
 	}
@@ -239,7 +240,7 @@ public class Activity_Main extends GifActivity implements IActivity_Main {
 			case R.id.menu_about:
 				final LinearLayout l = (LinearLayout) findViewById(R.id.about);
 				if (l.getVisibility() == View.GONE) {
-					Util.Fonts.setFont(this, l, Util.Fonts.CustomFont.Futura);
+					Util.Fonts.setFont(this, l, Util.Fonts.CustomFont.Roboto_Regular);
 					l.setVisibility(View.VISIBLE);
 					AlphaAnimation a = new AlphaAnimation(0.0f, 1.0f);
 					a.setDuration(500);

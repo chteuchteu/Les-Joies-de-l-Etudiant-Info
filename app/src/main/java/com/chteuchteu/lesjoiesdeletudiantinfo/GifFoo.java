@@ -2,6 +2,7 @@ package com.chteuchteu.lesjoiesdeletudiantinfo;
 
 import android.content.Context;
 import android.os.CountDownTimer;
+import android.util.Log;
 
 import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.Util;
 import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
@@ -41,14 +42,15 @@ public class GifFoo {
 		if (Util.getPref(context, "gifs").equals(""))
 			return;
 
-		gifs.clear();
+		this.gifs.clear();
 		List<Gif> gifs = Util.getGifs(context);
 		if (Util.removeUncompleteGifs(context, gifs))
 			gifs = Util.getGifs(context);
 
 		Util.removeOldGifs(gifs);
 
-		gifs.addAll(gifs);
+		this.gifs.addAll(gifs);
+
 	}
 	public void setGifs(List<Gif> gifs) {
 		this.gifs.clear();
@@ -60,4 +62,9 @@ public class GifFoo {
 
 	public void setCountDownTimer(CountDownTimer val) { this.countDownTimer = val; }
 	public CountDownTimer getCountDownTimer() { return this.countDownTimer; }
+
+	public static void log(String s) {
+		if (BuildConfig.DEBUG)
+			Log.d("LJDLI", s);
+	}
 }
