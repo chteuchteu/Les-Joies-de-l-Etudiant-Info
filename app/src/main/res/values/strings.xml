@@ -22,5 +22,6 @@
 	<string name="cache_emptied_none">Vidage du cache ignoré : le cache est vide</string>
 	<string name="menu_contact">Nous contacter</string>
 	<string name="countdown_txt">Prochain gif dans </string>
+	<string name="download_error">Erreur lors du téléchargement de ce gif…</string>
 
 </resources>

@@ -1,10 +1,8 @@
 package com.chteuchteu.lesjoiesdeletudiantinfo.hlpr;
 
 
-import android.util.Log;
-
+import com.chteuchteu.lesjoiesdeletudiantinfo.async.FeedParser;
 import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
-import com.chteuchteu.lesjoiesdeletudiantinfo.ui.Activity_Main.parseFeed;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -12,9 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,10 +22,9 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 public class RSSReader {
-	public static List<Gif> parse(String feedurl, parseFeed thread) {
-		List<Gif> l = new ArrayList<Gif>();
+	public static List<Gif> parse(String feedurl, FeedParser thread) {
+		List<Gif> l = new ArrayList<>();
 		try {
 			if (thread != null)
 				thread.manualPublishProgress(10);
@@ -66,12 +61,8 @@ public class RSSReader {
 			}
 			if (thread != null)
 				thread.manualPublishProgress(100);
-		} catch (SAXException ex) {
-			Log.e("", ex.toString());
-		} catch (IOException ex) {
-			Log.e("", ex.toString());
-		} catch (ParserConfigurationException ex) {
-			Log.e("", ex.toString());
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return l;
 	}

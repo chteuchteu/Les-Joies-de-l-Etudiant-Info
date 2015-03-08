@@ -5,9 +5,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.os.Environment;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chteuchteu.lesjoiesdeletudiantinfo.GifFoo;
 import com.chteuchteu.lesjoiesdeletudiantinfo.R;
 import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
 
@@ -24,24 +30,24 @@ public final class Util {
 	@SuppressLint("InlinedApi")
 	public static int getActionBarHeight(Context c) {
 		final TypedArray styledAttributes = c.getTheme().obtainStyledAttributes(
-				new int[] { android.R.attr.actionBarSize });
+				new int[]{android.R.attr.actionBarSize});
 		int height = (int) styledAttributes.getDimension(0, 0);
 		styledAttributes.recycle();
 		return height;
 	}
 	
-	public static List<Gif> getGifs(Activity a) {
-		String[] sg = Util.getPref(a, "gifs").split(";;");
-		List<Gif> li = new ArrayList<Gif>();
+	public static List<Gif> getGifs(Context context) {
+		String[] sg = Util.getPref(context, "gifs").split(";;");
+		List<Gif> list = new ArrayList<>();
 		for (String s : sg) {
 			Gif g = new Gif();
 			if (s.split("::").length > 0)	g.nom = s.split("::")[0];
 			if (s.split("::").length > 1)	g.urlArticle = s.split("::")[1];
 			if (s.split("::").length > 2)	g.urlGif = s.split("::")[2];
 			if (s.split("::").length > 3)	g.date = s.split("::")[3];
-			li.add(g);
+			list.add(g);
 		}
-		return li;
+		return list;
 	}
 	
 	public static void saveGifs(Context c, List<Gif> gifs) {
@@ -87,7 +93,7 @@ public final class Util {
 		return path;
 	}
 	
-	public static boolean removeUncompleteGifs(Activity a, List<Gif> l) {
+	public static boolean removeUncompleteGifs(Context context, List<Gif> l) {
 		boolean needSave = false;
 		for (Gif g : l) {
 			if (g.state == Gif.ST_DOWNLOADING) {
@@ -99,7 +105,7 @@ public final class Util {
 			}
 		}
 		if (needSave)
-			saveGifs(a, l);
+			saveGifs(context, l);
 		return needSave;
 	}
 	
@@ -214,16 +220,6 @@ public final class Util {
 		return null;
 	}
 	
-	public static int getGifPos(Gif gif, List<Gif> l) {
-		int i = 0;
-		for (Gif g : l) {
-			if (g.urlGif.equals(gif.urlGif))
-				return i;
-			i++;
-		}
-		return i;
-	}
-	
 	public static Gif getGifFromGifUrl(List<Gif> l, String u) {
 		if (l != null) {
 			for (Gif g : l) {
@@ -232,5 +228,65 @@ public final class Util {
 			}
 		}
 		return null;
+	}
+
+	public static final class Fonts {
+		/* ENUM Custom Fonts */
+		public enum CustomFont {
+			RobotoCondensed_Regular("RobotoCondensed-Regular.ttf"),
+			RobotoCondensed_Light("RobotoCondensed-Light.ttf"),
+			Futura("Futura.ttf");
+
+			final String file;
+			private CustomFont(String fileName) { this.file = fileName; }
+			public String getValue() { return this.file; }
+		}
+
+		/* Fonts */
+		public static void setFont(Context c, ViewGroup g, CustomFont font) {
+			Typeface mFont = Typeface.createFromAsset(c.getAssets(), font.getValue());
+			setFont(g, mFont);
+		}
+
+		public static void setFont(Context c, TextView t, CustomFont font) {
+			Typeface mFont = Typeface.createFromAsset(c.getAssets(), font.getValue());
+			t.setTypeface(mFont);
+		}
+
+		public static void setFont(Context c, Button t, CustomFont font) {
+			Typeface mFont = Typeface.createFromAsset(c.getAssets(), font.getValue());
+			t.setTypeface(mFont);
+		}
+
+		private static void setFont(ViewGroup group, Typeface font) {
+			int count = group.getChildCount();
+			View v;
+			for (int i = 0; i < count; i++) {
+				v = group.getChildAt(i);
+				if (v instanceof TextView)
+					((TextView) v).setTypeface(font);
+				else if (v instanceof ViewGroup)
+					setFont((ViewGroup) v, font);
+			}
+		}
+	}
+
+	public static void setTransition(Activity activity, String level) {
+		if (level.equals("rightToLeft"))
+			activity.overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
+		else if (level.equals("leftToRight"))
+			activity.overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
+	}
+
+	public static void saveLastViewed(Context context) {
+		if (GifFoo.getInstance().getFirstGif() != null)
+			Util.setPref(context, "lastViewed", GifFoo.getInstance().getFirstGif().urlArticle);
+	}
+
+	public static int getStatusBarHeight(Context context) {
+		int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+		if (resourceId > 0)
+			return context.getResources().getDimensionPixelSize(resourceId);
+		return 0;
 	}
 }

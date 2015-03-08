@@ -2,10 +2,6 @@
 	package="com.chteuchteu.lesjoiesdeletudiantinfo"
 	android:versionCode="1"
 	android:versionName="1.0" >
-
-	<uses-sdk
-		android:minSdkVersion="11"
-		android:targetSdkVersion="19" />
 	
 	<uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -29,19 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.Activity_Gif" >
-            <!-- <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="lesjoiesdeletudiantinfo.com"
-                    android:pathPrefix="/"
-                    android:scheme="http" />
-            </intent-filter>-->
-        </activity>
+        <activity android:name=".ui.Activity_Gif"/>
 
         <!-- Notifications -->
         <receiver android:name=".serv.BootReceiver" >
