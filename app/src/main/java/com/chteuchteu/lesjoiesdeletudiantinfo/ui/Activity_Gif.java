@@ -1,13 +1,5 @@
 package com.chteuchteu.lesjoiesdeletudiantinfo.ui;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -42,10 +34,17 @@ import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
 import com.chteuchteu.lesjoiesdeletudiantinfo.R;
 import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.Util;
-import com.google.analytics.tracking.android.EasyTracker;
+import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class Activity_Gif extends Activity {
 	public static int pos = -1;
@@ -504,8 +503,6 @@ public class Activity_Gif extends Activity {
 		super.onStop();
 		
 		//stopThread();
-		
-		EasyTracker.getInstance(this).activityStop(this);
 	}
 	
 	@Override
@@ -623,8 +620,5 @@ public class Activity_Gif extends Activity {
 		// Bug fix : when another applications goes foreground : gif becomes null
 		if (gif == null && Activity_Main.gifs != null && pos != -1)
 			gif = Activity_Main.gifs.get(pos);
-		
-		if (!Activity_Main.debug)
-			EasyTracker.getInstance(this).activityStart(this);
 	}
 }

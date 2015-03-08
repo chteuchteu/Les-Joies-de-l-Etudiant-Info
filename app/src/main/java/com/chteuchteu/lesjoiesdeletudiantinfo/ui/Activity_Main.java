@@ -56,7 +56,6 @@ import com.chteuchteu.lesjoiesdeletudiantinfo.serv.NotificationService;
 import com.chteuchteu.lesjoiesdeletudiantinfo.R;
 import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.RSSReader;
 import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.Util;
-import com.google.analytics.tracking.android.EasyTracker;
 import com.tjeannin.apprate.AppRate;
 
 public class Activity_Main extends Activity {
@@ -595,19 +594,5 @@ public class Activity_Main extends Activity {
 			overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
 		else if (level.equals("leftToRight"))
 			overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (!debug)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (!debug)
-			EasyTracker.getInstance(this).activityStop(this);
 	}
 }
