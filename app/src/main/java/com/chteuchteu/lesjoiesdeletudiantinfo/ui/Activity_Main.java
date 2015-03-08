@@ -182,8 +182,8 @@ public class Activity_Main extends GifActivity implements IActivity_Main {
 		for (Gif g : gifFoo.getGifs()) {
 			if (g.isValid()) {
 				HashMap<String,String> item = new HashMap<>();
-				item.put("line1", g.nom);
-				item.put("line2", g.date);
+				item.put("line1", g.getName());
+				item.put("line2", g.getDate());
 				list.add(item);
 			}
 		}

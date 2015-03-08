@@ -9,7 +9,6 @@ import android.graphics.Typeface;
 import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,10 +40,10 @@ public final class Util {
 		List<Gif> list = new ArrayList<>();
 		for (String s : sg) {
 			Gif g = new Gif();
-			if (s.split("::").length > 0)	g.nom = s.split("::")[0];
-			if (s.split("::").length > 1)	g.urlArticle = s.split("::")[1];
-			if (s.split("::").length > 2)	g.urlGif = s.split("::")[2];
-			if (s.split("::").length > 3)	g.date = s.split("::")[3];
+			if (s.split("::").length > 0)	g.setName(s.split("::")[0]);
+			if (s.split("::").length > 1)	g.setArticleUrl(s.split("::")[1]);
+			if (s.split("::").length > 2)	g.setGifUrl(s.split("::")[2]);
+			if (s.split("::").length > 3)	g.setDate(s.split("::")[3]);
 			list.add(g);
 		}
 		return list;
@@ -54,10 +53,9 @@ public final class Util {
 		String str = "";
 		int i=0;
 		for (Gif g : gifs) {
+			str += g.getName() + "::" + g.getArticleUrl() + "::" + g.getGifUrl() + "::" + g.getDate();
 			if (i != gifs.size()-1)
-				str = str + g.nom + "::" + g.urlArticle + "::" + g.urlGif + "::" + g.date + ";;";
-			else
-				str = str + g.nom + "::" + g.urlArticle + "::" + g.urlGif + "::" + g.date;
+				str += ";;";
 			i++;
 		}
 		setPref(c, "gifs", str);
@@ -80,9 +78,9 @@ public final class Util {
 	}
 	
 	public static String getFileName(Gif g) {
-		if (g == null || g.urlArticle == null || g.urlArticle.equals(""))
+		if (g == null || g.getArticleUrl() == null || g.getArticleUrl().equals(""))
 			return "";
-		return g.urlArticle.substring(g.urlArticle.lastIndexOf('/'));
+		return g.getArticleUrl().substring(g.getArticleUrl().lastIndexOf('/'));
 	}
 	
 	public static String getEntiereFileName(Gif g, boolean withFilePrefix) {
@@ -96,11 +94,11 @@ public final class Util {
 	public static boolean removeUncompleteGifs(Context context, List<Gif> l) {
 		boolean needSave = false;
 		for (Gif g : l) {
-			if (g.state == Gif.ST_DOWNLOADING) {
+			if (g.getState() == Gif.ST_DOWNLOADING) {
 				File f = new File(Util.getEntiereFileName(g, false));
 				if (f.exists())
 					f.delete();
-				g.state = Gif.ST_EMPTY;
+				g.setState(Gif.ST_EMPTY);
 				needSave = true;
 			}
 		}
@@ -211,24 +209,6 @@ public final class Util {
 	public static long getSecsDiff(Date first, Date latest) {
 		return (latest.getTime() - first.getTime()) / 1000;
 	}
-	
-	public static Gif getGif(List<Gif> l, String nom) {
-		for (Gif g : l) {
-			if (g.nom.equals(nom))
-				return g;
-		}
-		return null;
-	}
-	
-	public static Gif getGifFromGifUrl(List<Gif> l, String u) {
-		if (l != null) {
-			for (Gif g : l) {
-				if (g.urlGif.equals(u))
-					return g;
-			}
-		}
-		return null;
-	}
 
 	public static final class Fonts {
 		/* ENUM Custom Fonts */
@@ -249,11 +229,6 @@ public final class Util {
 		}
 
 		public static void setFont(Context c, TextView t, CustomFont font) {
-			Typeface mFont = Typeface.createFromAsset(c.getAssets(), font.getValue());
-			t.setTypeface(mFont);
-		}
-
-		public static void setFont(Context c, Button t, CustomFont font) {
 			Typeface mFont = Typeface.createFromAsset(c.getAssets(), font.getValue());
 			t.setTypeface(mFont);
 		}
@@ -280,7 +255,7 @@ public final class Util {
 
 	public static void saveLastViewed(Context context) {
 		if (GifFoo.getInstance().getFirstGif() != null)
-			Util.setPref(context, "lastViewed", GifFoo.getInstance().getFirstGif().urlArticle);
+			Util.setPref(context, "lastViewed", GifFoo.getInstance().getFirstGif().getArticleUrl());
 	}
 
 	public static int getStatusBarHeight(Context context) {

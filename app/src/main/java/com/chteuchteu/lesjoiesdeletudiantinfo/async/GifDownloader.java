@@ -67,7 +67,7 @@ public class GifDownloader extends AsyncTask<Void, Integer, Void> {
 		try {
 			isDownloading = true;
 			photo = new File(Util.getEntiereFileName(gif, false));
-			URL url = new URL(gif.urlGif);
+			URL url = new URL(gif.getGifUrl());
 			connection = (HttpURLConnection) url.openConnection();
 			connection.connect();
 
@@ -83,7 +83,7 @@ public class GifDownloader extends AsyncTask<Void, Integer, Void> {
 			long total = 0;
 			int count;
 
-			gif.state = Gif.ST_DOWNLOADING;
+			gif.setState(Gif.ST_DOWNLOADING);
 
 			while ((count = input.read(data)) != -1) {
 				if (isCancelled()) {
@@ -125,7 +125,7 @@ public class GifDownloader extends AsyncTask<Void, Integer, Void> {
 
 		if (photo != null && photo.exists()) {
 			try {
-				gif.state = Gif.ST_COMPLETE;
+				gif.setState(Gif.ST_COMPLETE);
 
 				webView.setVisibility(View.GONE);
 				String imagePath = Util.getEntiereFileName(gif, true);
@@ -152,7 +152,7 @@ public class GifDownloader extends AsyncTask<Void, Integer, Void> {
 
 	private void onDownloadError() {
 		Toast.makeText(activity, R.string.download_error, Toast.LENGTH_SHORT).show();
-		gif.state = Gif.ST_DOWNLOADING;
+		gif.setState(Gif.ST_DOWNLOADING);
 		Util.removeUncompleteGifs(activity, GifFoo.getInstance().getGifs());
 		progressBar.setVisibility(View.GONE);
 	}

@@ -96,7 +96,7 @@ public class Activity_Gif extends GifActivity {
 		textsShown = true;
 
 		TextView header_nom = (TextView) findViewById(R.id.header_nom);
-		header_nom.setText(gif.nom);
+		header_nom.setText(gif.getName());
 		if (header_nom.getText().toString().length() / 32 > 4) // nb lines
 			header_nom.setLineSpacing(-10, 1);
 		else if (header_nom.getText().toString().length() / 32 > 6)
@@ -156,8 +156,8 @@ public class Activity_Gif extends GifActivity {
 			gifDownloader = new GifDownloader(this, gif);
 			gifDownloader.execute();
 		} else {
-			if (gif.state != Gif.ST_COMPLETE)
-				gif.state = Gif.ST_COMPLETE;
+			if (gif.getState() != Gif.ST_COMPLETE)
+				gif.setState(Gif.ST_COMPLETE);
 			String imagePath = Util.getEntiereFileName(gif, true);
 			webView.loadDataWithBaseURL("", Util.getHtml(imagePath), "text/html", "utf-8", "");
 
@@ -166,7 +166,7 @@ public class Activity_Gif extends GifActivity {
 			if (pos == gifFoo.getGifs().size()-1)		findViewById(R.id.gif_suivant).setVisibility(View.GONE);
 			else			findViewById(R.id.gif_suivant).setVisibility(View.VISIBLE);
 
-			((TextView) findViewById(R.id.header_nom)).setText(gif.nom);
+			((TextView) findViewById(R.id.header_nom)).setText(gif.getName());
 
 			webView.setWebViewClient(new WebViewClient() {
 				public void onPageFinished(WebView v, String u) {
@@ -218,7 +218,7 @@ public class Activity_Gif extends GifActivity {
 				else			findViewById(R.id.gif_precedent).setVisibility(View.VISIBLE);
 				if (targetPos == gifFoo.getGifs().size()-1)		findViewById(R.id.gif_suivant).setVisibility(View.GONE);
 				else			findViewById(R.id.gif_suivant).setVisibility(View.VISIBLE);
-				((TextView) findViewById(R.id.header_nom)).setText(gif.nom);
+				((TextView) findViewById(R.id.header_nom)).setText(gif.getName());
 			}
 		}
 	}
@@ -316,7 +316,7 @@ public class Activity_Gif extends GifActivity {
 		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 		sharingIntent.setType("text/plain");
 		sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Les Joies du Sysadmin");
-		String shareText = gif.nom + " : " + gif.urlArticle;
+		String shareText = gif.getName() + " : " + gif.getArticleUrl();
 		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareText);
 		mShareActionProvider.setShareIntent(sharingIntent);
 	}
@@ -353,7 +353,7 @@ public class Activity_Gif extends GifActivity {
 				gifDownloader.execute();
 				return true;
 			case R.id.menu_openwebsite:
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(gif.urlArticle));
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(gif.getArticleUrl()));
 				startActivity(browserIntent);
 				return true;
 			default:

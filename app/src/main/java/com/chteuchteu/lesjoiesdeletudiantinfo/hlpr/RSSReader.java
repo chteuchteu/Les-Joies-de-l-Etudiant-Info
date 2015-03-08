@@ -40,18 +40,18 @@ public class RSSReader {
 				Element element = (Element) nodes.item(i);
 				if (!readNode(element, "title").equals("")) {
 					Gif g = new Gif();
-					g.nom = readNode(element, "title");
-					g.urlArticle = readNode(element, "link");
-					if (g.urlArticle.contains("?utm_source"))
-						g.urlArticle = g.urlArticle.substring(0, g.urlArticle.lastIndexOf('/'));
-					g.date = gMTDateToFrench3(readNode(element, "pubDate"));
+					g.setName(readNode(element, "title"));
+					g.setArticleUrl(readNode(element, "link"));
+					if (g.getArticleUrl().contains("?utm_source"))
+						g.setArticleUrl(g.getArticleUrl().substring(0, g.getArticleUrl().lastIndexOf('/')));
+					g.setDate(gMTDateToFrench3(readNode(element, "pubDate")));
 					
 					String content = readNode(element, "content:encoded");
 					if (content.contains("<![CDATA["))
 						content = content.substring("<![CDATA[".length(), content.length() - "]]>".length());
 					org.jsoup.nodes.Document c = Jsoup.parse(content);
 					Elements pngs = c.select("img[src$=.gif]");
-					g.urlGif = pngs.get(0).attr("src");
+					g.setGifUrl(pngs.get(0).attr("src"));
 					l.add(g);
 					
 					int percentage = i * 100 / nodes.getLength() / 2 + 50;

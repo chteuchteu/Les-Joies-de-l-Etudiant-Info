@@ -1,13 +1,10 @@
 package com.chteuchteu.lesjoiesdeletudiantinfo.serv;
 
-import java.util.List;
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.IBinder;
@@ -15,15 +12,18 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.support.v4.app.NotificationCompat;
 
-import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
+import com.chteuchteu.lesjoiesdeletudiantinfo.GifFoo;
 import com.chteuchteu.lesjoiesdeletudiantinfo.R;
 import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.RSSReader;
 import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.Util;
+import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
 import com.chteuchteu.lesjoiesdeletudiantinfo.ui.Activity_Main;
 
+import java.util.List;
+
 public class NotificationService extends Service {
-	private WakeLock 	mWakeLock;
-	private String		rssUrl = "http://lesjoiesdeletudiantinfo.com/feed/";
+	private WakeLock mWakeLock;
+	private Context context;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -35,7 +35,8 @@ public class NotificationService extends Service {
 		PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
 		mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "com.chteuchteu.lesjoiesdeletudiantinfo");
 		mWakeLock.acquire();
-		
+
+		context = this;
 		
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 		if (!cm.getBackgroundDataSetting()) {
@@ -53,12 +54,12 @@ public class NotificationService extends Service {
 		
 		@Override
 		protected Void doInBackground(Void... params) {
-			l = RSSReader.parse(rssUrl, null);
+			l = RSSReader.parse(GifFoo.RSS_URL, null);
 			
-			String lastUnseenGif = getPref("lastViewed");
+			String lastUnseenGif = Util.getPref(context, "lastViewed");
 			if (l.size() > 0) {
 				for (Gif g : l) {
-					if (g.urlArticle.equals(lastUnseenGif))
+					if (g.getArticleUrl().equals(lastUnseenGif))
 						break;
 					else
 						nbUnseenGifs++;
@@ -73,15 +74,15 @@ public class NotificationService extends Service {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			// Check if there are new gifs, and if a notification for them hasn't been dispayed yet
+			// Check if there are new gifs, and if a notification for them hasn't been displayed yet
 			boolean notif = (nbUnseenGifs > 0 && 
-					(getPref("lastNotifiedGif").equals("") 
-							|| l.size() > 0 && !l.get(0).urlGif.equals(getPref("lastNotifiedGif"))));
+					(Util.getPref(context, "lastNotifiedGif").equals("")
+							|| l.size() > 0 && !l.get(0).getGifUrl().equals(Util.getPref(context, "lastNotifiedGif"))));
 			
 			if (notif) {
 				// Save the last gif
 				if (l.size() > 0)
-					setPref("lastNotifiedGif", l.get(0).urlGif);
+					Util.setPref(context, "lastNotifiedGif", l.get(0).getGifUrl());
 				
 				String title = "Les Joies de l'Etudiant Info";
 				String text;
@@ -109,17 +110,7 @@ public class NotificationService extends Service {
 		}
 	}
 	
-	private String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setPref(String key, String value) {
-		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(key, value);
-		editor.commit();
-	}
-	
+
 	@Override
 	public void onStart(Intent intent, int startId) {
 		handleIntent(intent);
