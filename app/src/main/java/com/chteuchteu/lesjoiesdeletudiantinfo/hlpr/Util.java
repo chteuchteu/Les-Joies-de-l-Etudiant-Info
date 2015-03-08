@@ -1,4 +1,4 @@
-package com.chteuchteu.lesjoiesdeletudiantinfo;
+package com.chteuchteu.lesjoiesdeletudiantinfo.hlpr;
 
 import java.io.File;
 import java.text.ParseException;
@@ -18,6 +18,9 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Environment;
 import android.widget.Toast;
+
+import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
+import com.chteuchteu.lesjoiesdeletudiantinfo.R;
 
 public final class Util {
 	private Util() { }

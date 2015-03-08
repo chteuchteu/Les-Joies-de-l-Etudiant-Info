@@ -1,4 +1,4 @@
-package com.chteuchteu.lesjoiesdeletudiantinfo;
+package com.chteuchteu.lesjoiesdeletudiantinfo.obj;
 
 public class Gif {
 	public String nom = "";

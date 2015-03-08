@@ -1,4 +1,4 @@
-package com.chteuchteu.lesjoiesdeletudiantinfo;
+package com.chteuchteu.lesjoiesdeletudiantinfo.ui;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,12 +42,15 @@ import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
+import com.chteuchteu.lesjoiesdeletudiantinfo.R;
+import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.Util;
 import com.google.analytics.tracking.android.EasyTracker;
 
 public class Activity_Gif extends Activity {
 	public static int pos = -1;
 	private static Activity 	a;
-	public static Gif 			gif;
+	public static Gif gif;
 	public static Gif			old_gif;
 	private AsyncTask<Void, Integer, Void> downloadGifTh;
 	public static WebView		wv;

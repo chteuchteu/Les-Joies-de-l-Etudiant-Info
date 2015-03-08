@@ -1,4 +1,4 @@
-package com.chteuchteu.lesjoiesdeletudiantinfo;
+package com.chteuchteu.lesjoiesdeletudiantinfo.serv;
 
 import java.util.List;
 
@@ -14,6 +14,12 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.support.v4.app.NotificationCompat;
+
+import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
+import com.chteuchteu.lesjoiesdeletudiantinfo.R;
+import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.RSSReader;
+import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.Util;
+import com.chteuchteu.lesjoiesdeletudiantinfo.ui.Activity_Main;
 
 public class NotificationService extends Service {
 	private WakeLock 	mWakeLock;

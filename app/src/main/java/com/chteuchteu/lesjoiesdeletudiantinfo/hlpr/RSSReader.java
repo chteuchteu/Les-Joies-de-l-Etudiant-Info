@@ -1,4 +1,4 @@
-package com.chteuchteu.lesjoiesdeletudiantinfo;
+package com.chteuchteu.lesjoiesdeletudiantinfo.hlpr;
 
 
 import java.io.IOException;
@@ -25,7 +25,8 @@ import org.xml.sax.SAXException;
 
 import android.util.Log;
 
-import com.chteuchteu.lesjoiesdeletudiantinfo.Activity_Main.parseFeed;
+import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
+import com.chteuchteu.lesjoiesdeletudiantinfo.ui.Activity_Main.parseFeed;
 
 /**
  * Parser un flux RSS

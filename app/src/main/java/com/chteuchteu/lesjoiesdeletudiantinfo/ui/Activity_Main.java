@@ -1,4 +1,4 @@
-package com.chteuchteu.lesjoiesdeletudiantinfo;
+package com.chteuchteu.lesjoiesdeletudiantinfo.ui;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -51,6 +51,11 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
+import com.chteuchteu.lesjoiesdeletudiantinfo.serv.NotificationService;
+import com.chteuchteu.lesjoiesdeletudiantinfo.R;
+import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.RSSReader;
+import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.Util;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.tjeannin.apprate.AppRate;
 
