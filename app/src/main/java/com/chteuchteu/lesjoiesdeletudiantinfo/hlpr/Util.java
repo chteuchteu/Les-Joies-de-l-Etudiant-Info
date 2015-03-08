@@ -1,16 +1,5 @@
 package com.chteuchteu.lesjoiesdeletudiantinfo.hlpr;
 
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import org.jsoup.Jsoup;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -19,12 +8,17 @@ import android.content.res.TypedArray;
 import android.os.Environment;
 import android.widget.Toast;
 
-import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
 import com.chteuchteu.lesjoiesdeletudiantinfo.R;
+import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
+
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public final class Util {
-	private Util() { }
-	
 	public static String sdFolderName = "lesJoiesdelEtudiantInfo";
 	
 	@SuppressLint("InlinedApi")
@@ -63,46 +57,20 @@ public final class Util {
 		setPref(c, "gifs", str);
 	}
 	
-	public static String getSrcAttribute(String html) {
-		org.jsoup.nodes.Document doc = Jsoup.parse(html);
-		// jsoup : *= : contient la valeur (certains gifs sont sous la forme image.gif?3848483)
-		//org.jsoup.nodes.Element img = doc.select("img[src*=.gif]").first();
-		org.jsoup.nodes.Element img = doc.select("img[src]").first();
-		if (img != null)
-			return img.attr("src");
-		return "";
-	}
-	
 	public static int[] getCountdownFromSeconds(int seconds) {
-		int hours = (int) seconds / 3600;
-		int remainder = (int) seconds - hours * 3600;
+		int hours = seconds / 3600;
+		int remainder = seconds - hours * 3600;
 		int mins = remainder / 60;
 		remainder = remainder - mins * 60;
 		int secs = remainder;
 		
-		int[] ints = {hours , mins , secs};
-		return ints;
+		return new int[]{hours , mins , secs};
 	}
 	
 	public static String formatNumber(int number) {
 		if (number < 10)
 			return "0" + number;
 		return "" + number;
-	}
-	
-	public static String GMTDateToFrench3(String gmtDate) {
-		try {
-			// 2012-06-18 08:47:37 GMT
-			// 2014-01-09 16:57:58 GMT
-			//SimpleDateFormat dfGMT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
-			SimpleDateFormat dfGMT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z", Locale.ENGLISH);
-			dfGMT.parse(gmtDate);
-			SimpleDateFormat dfFrench = new SimpleDateFormat("d/MM", Locale.FRANCE);
-			return dfFrench.format(dfGMT.getCalendar().getTime());
-		} catch (ParseException ex) {
-			ex.printStackTrace();
-		}
-		return "";
 	}
 	
 	public static String getFileName(Gif g) {
@@ -146,7 +114,7 @@ public final class Util {
 				crt++;
 			}
 		}
-		String txt = "";
+		String txt;
 		if (crt == 0)
 			txt = c.getText(R.string.cache_emptied_none).toString();
 		else if (crt == 1)
@@ -193,26 +161,11 @@ public final class Util {
 		String css = "html, body, #wrapper {height:100%;width: 100%;margin: 0;padding: 0;border: 0;} #wrapper td {vertical-align: middle;text-align: center;} .container{width:100%;height:100%;background-image:url('" + gifPath +"'); background-size:contain; background-repeat:no-repeat;background-position:center;}";
 		//String js = "function resizeToMax(id){myImage = new Image();var img = document.getElementById(id);myImage.src = img.src;if(myImage.width / document.body.clientWidth > myImage.height / document.body.clientHeight){img.style.width = \"100%\"; } else {img.style.height = \"100%\";}}";
 		//String html = "<html><head><script>" + js + "</script><style>" + css + "</style></head><body><table id=\"wrapper\"><tr><td><img id=\"gif\" src=\""+ imagePath + "\" onload=\"resizeToMax(this.id)\" /></td></tr></table></body></html>";
-		String html = "<html><head><style>" + css + "</style></head><body><div class=\"container\"></div></body></html>";
-		return html;
-	}
-	
-	public static String getPref(Activity a, String key) {
-		return a.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
+		return "<html><head><style>" + css + "</style></head><body><div class=\"container\"></div></body></html>";
 	}
 	
 	public static String getPref(Context c, String key) {
 		return c.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public static boolean isSubsetOf(Collection<String> subset,
-			Collection<String> superset) {
-		for (String string : subset) {
-			if (!superset.contains(string)) {
-				return false;
-			}
-		}
-		return true;
 	}
 	
 	public static void setPref(Context c, String key, String value) {
@@ -222,33 +175,15 @@ public final class Util {
 			SharedPreferences prefs = c.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putString(key, value);
-			editor.commit();
+			editor.apply();
 		}
-	}
-	
-	public static void setPref(Activity a, String key, String value) {
-		if (value.equals(""))
-			removePref(a, key);
-		else {
-			SharedPreferences prefs = a.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(key, value);
-			editor.commit();
-		}
-	}
-	
-	public static void removePref(Activity a, String key) {
-		SharedPreferences prefs = a.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key);
-		editor.commit();
 	}
 	
 	public static void removePref(Context c, String key) {
 		SharedPreferences prefs = c.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.remove(key);
-		editor.commit();
+		editor.apply();
 	}
 	
 	@SuppressLint("SimpleDateFormat")
@@ -294,31 +229,6 @@ public final class Util {
 			for (Gif g : l) {
 				if (g.urlGif.equals(u))
 					return g;
-			}
-		}
-		return null;
-	}
-	
-	public static Gif getGifFromPostUrl(List<Gif> l, String u) {
-		for (Gif g : l) {
-			if (g.urlArticle.equals(u))
-				return g;
-		}
-		return null;
-	}
-	
-	public static Gif getGifFromWebUrl(List<Gif> l, String url) {
-		if (url.equals(""))	return null;
-		String[] spl = url.split("/");
-		if (spl.length < 2)	return null;
-		for (Gif g : l) {
-			String gu = g.urlArticle;
-			if (gu != null && !gu.equals("")) {
-				String[] spl2 = gu.split("/");
-				if (spl2.length > 2) {
-					if (spl[spl.length-2].equals(spl2[spl2.length-2]))
-						return g;
-				}
 			}
 		}
 		return null;

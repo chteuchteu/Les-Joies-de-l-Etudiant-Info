@@ -340,7 +340,7 @@ public class Activity_Main extends Activity {
 				list.clear();
 				HashMap<String,String> item;
 				for (Gif g : gifs) {
-					if (g.isValide()) {
+					if (g.isValid()) {
 						item = new HashMap<String,String>();
 						item.put("line1", g.nom);
 						item.put("line2", g.date);
@@ -462,7 +462,7 @@ public class Activity_Main extends Activity {
 				list.clear();
 				HashMap<String,String> item;
 				for (Gif g : gifs) {
-					if (g.isValide()) {
+					if (g.isValid()) {
 						item = new HashMap<String,String>();
 						item.put("line1", g.nom);
 						item.put("line2", g.date);

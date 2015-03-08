@@ -14,10 +14,8 @@ public class Gif {
 	
 	public Gif() { }
 	
-	public boolean isValide() {
-		if (!nom.equals("") && !urlGif.equals(""))
-			return true;
-		return false;
+	public boolean isValid() {
+		return !nom.equals("") && !urlGif.equals("");
 	}
 	
 	public boolean equals(Gif g) {
