@@ -1,11 +1,7 @@
 package com.chteuchteu.lesjoiesdeletudiantinfo.ui;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,8 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -41,8 +35,6 @@ public class Activity_Gif extends GifActivity {
 	public boolean		textsShown;
 
 	public float		deltaY;
-
-	public int			actionBarColor = Color.argb(200, 6, 124, 64);
 	
 	public int			SWITCH_NEXT = 1;
 	public int			SWITCH_PREVIOUS = 0;
@@ -52,38 +44,8 @@ public class Activity_Gif extends GifActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		setContentView(R.layout.activity_gif);
-
-		int contentPaddingTop = 0;
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setTitle(" Les Joies de l'Etudiant Info");
-		actionBar.setBackgroundDrawable(new ColorDrawable(actionBarColor));
-		final TypedArray styledAttributes = getApplicationContext().getTheme().obtainStyledAttributes(
-				new int[] { android.R.attr.actionBarSize });
-		contentPaddingTop += (int) styledAttributes.getDimension(0, 0);
-		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			int id = getResources().getIdentifier("config_enableTranslucentDecor", "bool", "android");
-			if (id != 0 && getResources().getBoolean(id)) { // Translucent available
-				Window w = getWindow();
-				w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-				w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-				LinearLayout notifBarBG = (LinearLayout) findViewById(R.id.kitkat_actionbar_notifs);
-				notifBarBG.setBackgroundColor(actionBarColor);
-				notifBarBG.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, Util.getStatusBarHeight(this)));
-				notifBarBG.setVisibility(View.VISIBLE);
-				contentPaddingTop += Util.getStatusBarHeight(this);
-			}
-		}
-		if (contentPaddingTop != 0) {
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-			lp.setMargins(0, contentPaddingTop, 0, 0);
-			findViewById(R.id.actions_container).setLayoutParams(lp);
-		}
+		super.onContentViewSet();
 
 		Intent thisIntent = getIntent();
 		pos = 0;

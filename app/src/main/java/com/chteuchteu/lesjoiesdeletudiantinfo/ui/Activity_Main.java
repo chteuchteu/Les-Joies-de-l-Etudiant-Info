@@ -1,25 +1,18 @@
 package com.chteuchteu.lesjoiesdeletudiantinfo.ui;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.PendingIntent.CanceledException;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -27,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -46,7 +38,6 @@ import java.util.HashMap;
 public class Activity_Main extends GifActivity implements IActivity_Main {
 	private ArrayList<HashMap<String, String>> list;
 	private MenuItem	menu_notifs;
-	private int			actionBarColor = Color.argb(200, 6, 124, 64);
 	private boolean	    notifsEnabled;
 	public static int 	scrollY;
 	private ListView 	lv_gifs;
@@ -55,47 +46,12 @@ public class Activity_Main extends GifActivity implements IActivity_Main {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		setContentView(R.layout.activity_main);
+		super.onContentViewSet();
 		
 		lv_gifs = (ListView) findViewById(R.id.list);
 		list = new ArrayList<>();
-		
-		int contentPaddingTop = 0;
-		int contentPaddingBottom = 0;
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(false);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			actionBar.setHomeButtonEnabled(false);
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setTitle(" Les Joies de l'Etudiant Info");
-		actionBar.setBackgroundDrawable(new ColorDrawable(actionBarColor));
-		final TypedArray styledAttributes = getApplicationContext().getTheme().obtainStyledAttributes(
-				new int[] { android.R.attr.actionBarSize });
-		contentPaddingTop += (int) styledAttributes.getDimension(0, 0);
-		styledAttributes.recycle();
 
-		LinearLayout countdown_container = (LinearLayout) findViewById(R.id.countdown_container);
-		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			int id = getResources().getIdentifier("config_enableTranslucentDecor", "bool", "android");
-			if (id != 0 && getResources().getBoolean(id)) { // Translucent available
-				Window w = getWindow();
-				w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-				w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-				contentPaddingTop += Util.getStatusBarHeight(this);
-				contentPaddingBottom = 150;
-			}
-		}
-		else
-			findViewById(R.id.kitkat_actionbar_notifs).setVisibility(View.GONE);
-		if (contentPaddingTop != 0) {
-			((RelativeLayout.LayoutParams) countdown_container.getLayoutParams()).setMargins(0, contentPaddingTop, 0, 0);
-			lv_gifs.setClipToPadding(false);
-			lv_gifs.setPadding(0, contentPaddingTop, 0, contentPaddingBottom);
-		}
-
-		
 		if (Util.getPref(this, "first_disclaimer").equals("")) {
 			Util.setPref(this, "first_disclaimer", "true");
 			final LinearLayout l = (LinearLayout) findViewById(R.id.first_disclaimer);
