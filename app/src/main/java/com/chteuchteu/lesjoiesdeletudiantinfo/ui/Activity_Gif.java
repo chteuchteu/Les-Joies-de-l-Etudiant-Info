@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.chteuchteu.lesjoiesdeletudiantinfo.GifFoo;
 import com.chteuchteu.lesjoiesdeletudiantinfo.R;
 import com.chteuchteu.lesjoiesdeletudiantinfo.async.GifDownloader;
 import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.Util;
@@ -115,7 +114,7 @@ public class Activity_Gif extends GifActivity {
 			if (gif.getState() != Gif.ST_COMPLETE)
 				gif.setState(Gif.ST_COMPLETE);
 			String imagePath = Util.getEntiereFileName(gif, true);
-			GifFoo.log("loading data with base url " + Util.getEntiereFileName(gif, true));
+
 			webView.loadDataWithBaseURL("", Util.getHtml(imagePath), "text/html", "utf-8", "");
 
 			webView.setWebViewClient(new WebViewClient() {
@@ -279,6 +278,14 @@ public class Activity_Gif extends GifActivity {
 			case R.id.menu_openwebsite:
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(gif.getArticleUrl()));
 				startActivity(browserIntent);
+				return true;
+			case R.id.menu_share:
+				Intent share = new Intent(android.content.Intent.ACTION_SEND);
+				share.setType("text/plain");
+				share.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				share.putExtra(Intent.EXTRA_SUBJECT, gif.getName());
+				share.putExtra(Intent.EXTRA_TEXT, gif.getArticleUrl());
+				startActivity(Intent.createChooser(share, getString(R.string.menu_share)));
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
