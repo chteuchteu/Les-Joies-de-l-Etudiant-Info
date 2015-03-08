@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	  xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menu_refresh"
-        android:icon="@drawable/navigation_refresh_dark"
-        android:showAsAction="always"
+		app:showAsAction="never"
         android:title="@string/refresh"/>
     <item
         android:id="@+id/menu_about"
-        android:icon="@drawable/action_about"
-        android:showAsAction="always"
+        app:showAsAction="never"
         android:title="@string/about_menu"/>
     <item
         android:id="@+id/notifications"
         android:checkable="true"
         android:checked="true"
-        android:showAsAction="never"
+		app:showAsAction="never"
         android:title="@string/menu_notifications"/>
     <item
         android:id="@+id/menu_clear_cache"
-        android:showAsAction="never"
+		app:showAsAction="never"
         android:title="@string/menu_clear_cache"/>
     <item 
     	android:id="@+id/menu_contact"
-    	android:showAsAction="never"
+		app:showAsAction="never"
     	android:title="@string/menu_contact" />
     
 </menu>

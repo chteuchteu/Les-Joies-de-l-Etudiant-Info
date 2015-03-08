@@ -17,7 +17,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.chteuchteu.lesjoiesdeletudiantinfo.R;
@@ -39,8 +38,7 @@ public class Activity_Gif extends GifActivity {
 	public int			SWITCH_NEXT = 1;
 	public int			SWITCH_PREVIOUS = 0;
 
-	public ShareActionProvider mShareActionProvider;
-
+	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -155,8 +153,6 @@ public class Activity_Gif extends GifActivity {
 			
 			if (targetPos >= 0 && targetPos < gifFoo.getGifs().size()-1) {
 				gif = gifFoo.getGifs().get(targetPos);
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-					updateSharingIntent();
 
 				if (webView.getVisibility() == View.VISIBLE) {
 					AlphaAnimation an = new AlphaAnimation(1.0f, 0.0f);
@@ -255,32 +251,12 @@ public class Activity_Gif extends GifActivity {
 		
 		Util.removeUncompleteGifs(this, gifFoo.getGifs());
 	}
-	
-	
-	@SuppressLint("NewApi")
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.gifs, menu);
-		
-		MenuItem item = menu.findItem(R.id.menu_share);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			mShareActionProvider = (ShareActionProvider) item.getActionProvider();
-			updateSharingIntent();
-		}
-		else
-			item.setVisible(false);
-		
+
 		return true;
-	}
-	
-	@SuppressLint("NewApi")
-	private void updateSharingIntent() {
-		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-		sharingIntent.setType("text/plain");
-		sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Les Joies du Sysadmin");
-		String shareText = gif.getName() + " : " + gif.getArticleUrl();
-		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareText);
-		mShareActionProvider.setShareIntent(sharingIntent);
 	}
 	
 	@Override
