@@ -4,7 +4,7 @@
 
 	<style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
 		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorPrimaryDark">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name="android:windowNoTitle">true</item>
 		<item name="windowActionBar">false</item>
 	</style>
@@ -21,7 +21,7 @@
 		<item name="android:shadowDy">2</item>
 		<item name="android:shadowRadius">1</item>
 		<item name="android:textColor">#ffffff</item>
-		<item name="android:textSize">20sp</item>
+		<item name="android:textSize">18sp</item>
 		<item name="android:background">@drawable/actionbuttonbackground</item>
 	</style>
 </resources>

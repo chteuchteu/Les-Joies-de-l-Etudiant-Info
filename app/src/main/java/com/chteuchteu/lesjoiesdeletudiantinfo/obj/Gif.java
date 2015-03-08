@@ -11,8 +11,15 @@ public class Gif {
 	public static int ST_EMPTY = 1;
 	public static int ST_DOWNLOADING = 2;
 	public static int ST_COMPLETE = 3;
-	
+
 	public Gif() { }
+
+	public Gif(String name, String articleUrl, String gifUrl, String date) {
+		this.name = name;
+		this.articleUrl = articleUrl;
+		this.gifUrl = gifUrl;
+		this.date = date;
+	}
 	
 	public boolean isValid() {
 		return !name.equals("") && !gifUrl.equals("");

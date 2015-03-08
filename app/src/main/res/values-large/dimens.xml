@@ -7,7 +7,7 @@
     
     <dimen name="gif_list_fontsize1">19sp</dimen>
     <dimen name="gif_list_fontsize2">16sp</dimen>
-    <dimen name="header_title_fontsize">36sp</dimen>
+    <dimen name="header_title_fontsize">28sp</dimen>
     <dimen name="countdown_fontsize1">17sp</dimen>
     <dimen name="countdown_fontsize2">30sp</dimen>
 

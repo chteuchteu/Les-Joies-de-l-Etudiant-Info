@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.chteuchteu.lesjoiesdeletudiantinfo.GifFoo;
 import com.chteuchteu.lesjoiesdeletudiantinfo.R;
 import com.chteuchteu.lesjoiesdeletudiantinfo.async.GifDownloader;
 import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.Util;
@@ -43,6 +44,7 @@ public class Activity_Gif extends GifActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gif);
 		super.onContentViewSet();
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Intent thisIntent = getIntent();
 		pos = 0;
@@ -90,6 +92,8 @@ public class Activity_Gif extends GifActivity {
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.header_nom), Util.Fonts.CustomFont.Roboto_Light);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.gif_precedent), Util.Fonts.CustomFont.Roboto_Regular);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.gif_suivant), Util.Fonts.CustomFont.Roboto_Regular);
+
+		loadGif();
 	}
 	
 	@Override
@@ -111,14 +115,8 @@ public class Activity_Gif extends GifActivity {
 			if (gif.getState() != Gif.ST_COMPLETE)
 				gif.setState(Gif.ST_COMPLETE);
 			String imagePath = Util.getEntiereFileName(gif, true);
+			GifFoo.log("loading data with base url " + Util.getEntiereFileName(gif, true));
 			webView.loadDataWithBaseURL("", Util.getHtml(imagePath), "text/html", "utf-8", "");
-
-			if (pos == 0)	findViewById(R.id.gif_precedent).setVisibility(View.GONE);
-			else			findViewById(R.id.gif_precedent).setVisibility(View.VISIBLE);
-			if (pos == gifFoo.getGifs().size()-1)		findViewById(R.id.gif_suivant).setVisibility(View.GONE);
-			else			findViewById(R.id.gif_suivant).setVisibility(View.VISIBLE);
-
-			((TextView) findViewById(R.id.header_nom)).setText(gif.getName());
 
 			webView.setWebViewClient(new WebViewClient() {
 				public void onPageFinished(WebView v, String u) {
@@ -139,37 +137,33 @@ public class Activity_Gif extends GifActivity {
 			toggleTexts();
 			return;
 		}
-		if (gif != null) {
-			stopThread();
-			int targetPos = which == SWITCH_NEXT ? pos + 1 : pos - 1;
-			
-			if (targetPos >= 0 && targetPos < gifFoo.getGifs().size()-1) {
-				gif = gifFoo.getGifs().get(targetPos);
 
-				if (webView.getVisibility() == View.VISIBLE) {
-					AlphaAnimation an = new AlphaAnimation(1.0f, 0.0f);
-					an.setDuration(150);
-					an.setAnimationListener(new AnimationListener() {
-						@Override public void onAnimationStart(Animation animation) { }
-						@Override public void onAnimationRepeat(Animation animation) { }
-						@Override
-						public void onAnimationEnd(Animation animation) {
-							webView.setVisibility(View.GONE);
-						}
-					});
-					webView.startAnimation(an);
-				}
-				
-				loadGif();
-				
-				pos = targetPos;
+		stopThread();
+		int targetPos = which == SWITCH_NEXT ? pos + 1 : pos - 1;
 
-				if (targetPos == 0)	findViewById(R.id.gif_precedent).setVisibility(View.GONE);
-				else			findViewById(R.id.gif_precedent).setVisibility(View.VISIBLE);
-				if (targetPos == gifFoo.getGifs().size()-1)		findViewById(R.id.gif_suivant).setVisibility(View.GONE);
-				else			findViewById(R.id.gif_suivant).setVisibility(View.VISIBLE);
-				((TextView) findViewById(R.id.header_nom)).setText(gif.getName());
+		if (targetPos >= 0 && targetPos < gifFoo.getGifs().size()-1) {
+			gif = gifFoo.getGifs().get(targetPos);
+
+			if (webView.getVisibility() == View.VISIBLE) {
+				AlphaAnimation an = new AlphaAnimation(1.0f, 0.0f);
+				an.setDuration(150);
+				an.setAnimationListener(new AnimationListener() {
+					@Override public void onAnimationStart(Animation animation) { }
+					@Override public void onAnimationRepeat(Animation animation) { }
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						webView.setVisibility(View.GONE);
+					}
+				});
+				webView.startAnimation(an);
 			}
+
+			pos = targetPos;
+			findViewById(R.id.gif_precedent).setVisibility(pos == 0 ? View.GONE : View.VISIBLE);
+			findViewById(R.id.gif_suivant).setVisibility(pos == gifFoo.getGifs().size()-1 ? View.GONE : View.VISIBLE);
+			((TextView) findViewById(R.id.header_nom)).setText(gif.getName());
+
+			loadGif();
 		}
 	}
 	

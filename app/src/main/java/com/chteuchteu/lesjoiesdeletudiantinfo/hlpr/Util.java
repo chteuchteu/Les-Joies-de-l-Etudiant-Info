@@ -29,11 +29,7 @@ public final class Util {
 		String[] sg = Util.getPref(context, "gifs").split(";;");
 		List<Gif> list = new ArrayList<>();
 		for (String s : sg) {
-			Gif g = new Gif();
-			if (s.split("::").length > 0)	g.setName(s.split("::")[0]);
-			if (s.split("::").length > 1)	g.setArticleUrl(s.split("::")[1]);
-			if (s.split("::").length > 2)	g.setGifUrl(s.split("::")[2]);
-			if (s.split("::").length > 3)	g.setDate(s.split("::")[3]);
+			Gif g = new Gif(s.split("::")[0], s.split("::")[1], s.split("::")[2], s.split("::")[3]);
 			list.add(g);
 		}
 		return list;
@@ -66,11 +62,12 @@ public final class Util {
 			return "0" + number;
 		return "" + number;
 	}
-	
+
+	// http://lesjoiesdeletudiantinfo.com/3392/quand-tu-rentres-dans-une-salle-de-cours-en-t/
+	// => quand-tu-rentres-dans-une-salle-de-cours-en-t
 	public static String getFileName(Gif g) {
-		if (g == null || g.getArticleUrl() == null || g.getArticleUrl().equals(""))
-			return "";
-		return g.getArticleUrl().substring(g.getArticleUrl().lastIndexOf('/'));
+		String[] elements = g.getArticleUrl().split("/");
+		return elements[elements.length-1];
 	}
 	
 	public static String getEntiereFileName(Gif g, boolean withFilePrefix) {

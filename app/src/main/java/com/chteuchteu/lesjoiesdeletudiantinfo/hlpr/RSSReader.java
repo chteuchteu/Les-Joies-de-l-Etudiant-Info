@@ -42,8 +42,6 @@ public class RSSReader {
 					Gif g = new Gif();
 					g.setName(readNode(element, "title"));
 					g.setArticleUrl(readNode(element, "link"));
-					if (g.getArticleUrl().contains("?utm_source"))
-						g.setArticleUrl(g.getArticleUrl().substring(0, g.getArticleUrl().lastIndexOf('/')));
 					g.setDate(gMTDateToFrench3(readNode(element, "pubDate")));
 					
 					String content = readNode(element, "content:encoded");
