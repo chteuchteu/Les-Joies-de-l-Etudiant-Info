@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.chteuchteu.lesjoiesdeletudiantinfo.GifFoo;
 import com.chteuchteu.lesjoiesdeletudiantinfo.R;
+import com.crashlytics.android.Crashlytics;
 
 public class GifActivity extends ActionBarActivity {
 	protected GifFoo gifFoo;
@@ -17,6 +18,7 @@ public class GifActivity extends ActionBarActivity {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Crashlytics.start(this);
 
 		gifFoo = GifFoo.getInstance(this);
 		activity = this;

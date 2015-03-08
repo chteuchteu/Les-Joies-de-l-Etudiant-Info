@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.chteuchteu.lesjoiesdeletudiantinfo"
-	android:versionCode="1"
-	android:versionName="1.0" >
+	android:versionCode="2"
+	android:versionName="2.0" >
 	
 	<uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -37,6 +37,7 @@
         <service
             android:name=".serv.NotificationService"
             android:enabled="true" />
+		<meta-data android:name="com.crashlytics.ApiKey" android:value="b7bc84aa870bd35d3de03f69309f1748a52354a4"/>
 	</application>
 
 </manifest>
