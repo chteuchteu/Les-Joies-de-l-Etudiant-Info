@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 
-import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.Util;
+import com.chteuchteu.gifapplicationlibrary.hlpr.MainUtil;
 
 public class BootReceiver extends BroadcastReceiver {
 	
@@ -19,7 +19,7 @@ public class BootReceiver extends BroadcastReceiver {
 		// "this" whenever we need to pass a reference to the current context.
 		// Thankfully, Android will supply a valid Context as the first parameter
 		
-		if (Util.getPref(context, "notifs").equals("true")) {
+		if (MainUtil.Prefs.getPref(context, "notifs").equals("true")) {
 			int min = 180;
 			//if (!getPref("notifs_refreshRate", context).equals(""))
 			//	min = Integer.parseInt(getPref("notifs_refreshRate", context));

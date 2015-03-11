@@ -36,4 +36,5 @@ dependencies {
     compile files('libs/AppRate_1.1.jar')
     compile files('libs/jsoup-1.7.2.jar')
     compile 'com.crashlytics.android:crashlytics:1.+'
+    compile project(':gifapplicationlibrary')
 }

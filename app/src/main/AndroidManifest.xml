@@ -26,6 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.Activity_Gif"/>
+        <activity android:name="com.chteuchteu.gifapplicationlibrary.ui.Super_Activity_Main"/>
+        <activity android:name="com.chteuchteu.gifapplicationlibrary.ui.Super_Activity_Gif"/>
 
         <!-- Notifications -->
         <receiver android:name=".serv.BootReceiver" >

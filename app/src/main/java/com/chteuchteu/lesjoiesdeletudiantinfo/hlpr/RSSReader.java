@@ -1,8 +1,7 @@
 package com.chteuchteu.lesjoiesdeletudiantinfo.hlpr;
 
-
-import com.chteuchteu.lesjoiesdeletudiantinfo.async.FeedParser;
-import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
+import com.chteuchteu.gifapplicationlibrary.async.DataSourceParser;
+import com.chteuchteu.gifapplicationlibrary.obj.Gif;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -22,8 +21,9 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 public class RSSReader {
-	public static List<Gif> parse(String feedurl, FeedParser thread) {
+	public static List<Gif> parse(String feedurl, DataSourceParser thread) {
 		List<Gif> l = new ArrayList<>();
 		try {
 			if (thread != null)

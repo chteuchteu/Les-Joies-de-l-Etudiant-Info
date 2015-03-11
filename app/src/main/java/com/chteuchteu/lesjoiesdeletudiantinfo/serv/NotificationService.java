@@ -12,11 +12,12 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.support.v4.app.NotificationCompat;
 
+import com.chteuchteu.gifapplicationlibrary.GifApplicationSingleton;
+import com.chteuchteu.gifapplicationlibrary.hlpr.CacheUtil;
+import com.chteuchteu.gifapplicationlibrary.hlpr.MainUtil;
+import com.chteuchteu.gifapplicationlibrary.obj.Gif;
 import com.chteuchteu.lesjoiesdeletudiantinfo.GifFoo;
 import com.chteuchteu.lesjoiesdeletudiantinfo.R;
-import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.RSSReader;
-import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.Util;
-import com.chteuchteu.lesjoiesdeletudiantinfo.obj.Gif;
 import com.chteuchteu.lesjoiesdeletudiantinfo.ui.Activity_Main;
 
 import java.util.List;
@@ -49,14 +50,21 @@ public class NotificationService extends Service {
 	}
 	
 	private class PollTask extends AsyncTask<Void, Void, Void> {
-		int nbUnseenGifs = 0;
-		List<Gif> l;
+		private int nbUnseenGifs = 0;
+		private List<Gif> l;
+		private GifApplicationSingleton gas;
+
+		public PollTask() {
+			this.gas = GifApplicationSingleton.create(context, GifFoo.getApplicationBundle());
+		}
 		
 		@Override
 		protected Void doInBackground(Void... params) {
-			l = RSSReader.parse(GifFoo.RSS_URL, null);
+			l = this.gas.getBundle().getDataSourceParser().parseDataSource(
+					this.gas.getBundle().getDataSourceUrl()
+			);
 			
-			String lastUnseenGif = Util.getPref(context, "lastViewed");
+			String lastUnseenGif = MainUtil.Prefs.getPref(context, "lastViewed");
 			if (l.size() > 0) {
 				for (Gif g : l) {
 					if (g.getArticleUrl().equals(lastUnseenGif))
@@ -67,7 +75,7 @@ public class NotificationService extends Service {
 			}
 			
 			if (nbUnseenGifs > 0)
-				Util.saveGifs(getApplicationContext(), l);
+				CacheUtil.saveGifs(getApplicationContext(), l);
 			
 			return null;
 		}
@@ -76,13 +84,13 @@ public class NotificationService extends Service {
 		protected void onPostExecute(Void result) {
 			// Check if there are new gifs, and if a notification for them hasn't been displayed yet
 			boolean notif = (nbUnseenGifs > 0 && 
-					(Util.getPref(context, "lastNotifiedGif").equals("")
-							|| l.size() > 0 && !l.get(0).getGifUrl().equals(Util.getPref(context, "lastNotifiedGif"))));
+					(MainUtil.Prefs.getPref(context, "lastNotifiedGif").equals("")
+							|| l.size() > 0 && !l.get(0).getGifUrl().equals(MainUtil.Prefs.getPref(context, "lastNotifiedGif"))));
 			
 			if (notif) {
 				// Save the last gif
 				if (l.size() > 0)
-					Util.setPref(context, "lastNotifiedGif", l.get(0).getGifUrl());
+					MainUtil.Prefs.setPref(context, "lastNotifiedGif", l.get(0).getGifUrl());
 				
 				String title = "Les Joies de l'Etudiant Info";
 				String text;

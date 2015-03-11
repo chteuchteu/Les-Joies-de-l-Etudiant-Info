@@ -7,7 +7,5 @@
     <dimen name="listview_bottom_margin">8dp</dimen>
 
     <dimen name="header_title_fontsize">22sp</dimen>
-    <dimen name="countdown_fontsize1">15sp</dimen>
-    <dimen name="countdown_fontsize2">25sp</dimen>
 
 </resources>
