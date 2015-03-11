@@ -65,7 +65,7 @@ public class RSSReader {
 		return l;
 	}
 
-	public static String readNode(Node _node, String _path) {
+	private static String readNode(Node _node, String _path) {
 		
 		String[] paths = _path.split("\\|");
 		Node node = null;
@@ -80,7 +80,7 @@ public class RSSReader {
 		return node != null ? node.getTextContent() : "";
 	}
 
-	public static Node getChildByName(Node _node, String _name) {
+	private static Node getChildByName(Node _node, String _name) {
 		if (_node == null)
 			return null;
 
@@ -99,7 +99,7 @@ public class RSSReader {
 		return null;
 	}
 	
-	public static String gMTDateToFrench3(String gmtDate) {
+	private static String gMTDateToFrench3(String gmtDate) {
 		try {
 			SimpleDateFormat dfGMT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
 			dfGMT.parse(gmtDate);
