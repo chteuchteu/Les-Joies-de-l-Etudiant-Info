@@ -24,7 +24,7 @@ public class Activity_Main extends Super_Activity_Main {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		GifApplicationSingleton.create(this, GifFoo.getApplicationBundle());
+		GifApplicationSingleton.create(this, GifFoo.getApplicationBundle(this));
 		super.onCreate(savedInstanceState);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this)

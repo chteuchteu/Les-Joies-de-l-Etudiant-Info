@@ -55,7 +55,7 @@ public class NotificationService extends Service {
 		private GifApplicationSingleton gas;
 
 		public PollTask() {
-			this.gas = GifApplicationSingleton.create(context, GifFoo.getApplicationBundle());
+			this.gas = GifApplicationSingleton.create(context, GifFoo.getApplicationBundle(context));
 		}
 		
 		@Override

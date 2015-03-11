@@ -1,5 +1,7 @@
 package com.chteuchteu.lesjoiesdeletudiantinfo;
 
+import android.content.Context;
+
 import com.chteuchteu.gifapplicationlibrary.i.IDataSourceParser;
 import com.chteuchteu.gifapplicationlibrary.obj.Gif;
 import com.chteuchteu.gifapplicationlibrary.obj.GifApplicationBundle;
@@ -8,7 +10,7 @@ import com.chteuchteu.lesjoiesdeletudiantinfo.hlpr.RSSReader;
 import java.util.List;
 
 public class GifFoo {
-	public static GifApplicationBundle getApplicationBundle() {
+	public static GifApplicationBundle getApplicationBundle(Context context) {
 		return new GifApplicationBundle(
 				"http://lesjoiesdeletudiantinfo.com/feed/",
 				new IDataSourceParser() {
@@ -17,7 +19,8 @@ public class GifFoo {
 						return RSSReader.parse(dataSourceUrl, null);
 					}
 				},
-				"lesJoiesdelEtudiantInfo"
+				"lesJoiesdelEtudiantInfo",
+				context.getString(R.string.about)
 		);
 	}
 }
