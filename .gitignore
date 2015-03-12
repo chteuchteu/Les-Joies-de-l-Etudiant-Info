@@ -2,6 +2,7 @@
 .idea/
 .gradle
 !build.gradle
+app/build/
 build/
 /*/local.properties
 /*/out
