@@ -69,7 +69,7 @@ public class Activity_Main extends Super_Activity_Main {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
 
-		if (item.getItemId() == com.chteuchteu.gifapplicationlibrary.R.id.notifications) {
+		if (item.getItemId() == com.chteuchteu.gifapplicationlibrary.R.id.menu_list_notifications) {
 			item.setChecked(!item.isChecked());
 			if (item.isChecked()) enableNotifs();
 			else disableNotifs();
@@ -83,7 +83,7 @@ public class Activity_Main extends Super_Activity_Main {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		menu_notifs = menu.findItem(com.chteuchteu.gifapplicationlibrary.R.id.notifications);
+		menu_notifs = menu.findItem(com.chteuchteu.gifapplicationlibrary.R.id.menu_list_notifications);
 		menu_notifs.setChecked(MainUtil.Prefs.getPref(this, "notifs").equals("true"));
 		return true;
 	}
