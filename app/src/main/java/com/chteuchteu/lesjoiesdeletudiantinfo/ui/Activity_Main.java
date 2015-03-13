@@ -11,8 +11,6 @@ import com.chteuchteu.lesjoiesdeletudiantinfo.R;
 import com.tjeannin.apprate.AppRate;
 
 public class Activity_Main extends Super_Activity_Main {
-	private MenuItem menu_notifs;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		GifApplicationSingleton.create(this, GifFoo.getApplicationBundle(this));
