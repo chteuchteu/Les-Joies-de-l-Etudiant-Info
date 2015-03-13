@@ -1,6 +1,5 @@
 package com.chteuchteu.lesjoiesdeletudiantinfo.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -42,7 +41,7 @@ public class Activity_Main extends Super_Activity_Main {
 	}
 
 	private void enableNotifs() {
-		MainUtil.Prefs.setPref(this, "notifs", "true");
+		MainUtil.Prefs.setPref(this, "notifs", true);
 		
 		int minutes = 180;
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -59,20 +58,21 @@ public class Activity_Main extends Super_Activity_Main {
 	}
 	
 	private void disableNotifs() {
-		MainUtil.Prefs.setPref(this, "notifs", "false");
+		MainUtil.Prefs.setPref(this, "notifs", false);
 		if (menu_notifs != null)
 			menu_notifs.setChecked(false);
 	}
-	
-	@SuppressLint("NewApi")
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
 
 		if (item.getItemId() == com.chteuchteu.gifapplicationlibrary.R.id.menu_list_notifications) {
 			item.setChecked(!item.isChecked());
-			if (item.isChecked()) enableNotifs();
-			else disableNotifs();
+			if (item.isChecked())
+                enableNotifs();
+			else
+                disableNotifs();
 			return true;
 		}
 
@@ -84,7 +84,7 @@ public class Activity_Main extends Super_Activity_Main {
 		super.onCreateOptionsMenu(menu);
 
 		menu_notifs = menu.findItem(com.chteuchteu.gifapplicationlibrary.R.id.menu_list_notifications);
-		menu_notifs.setChecked(MainUtil.Prefs.getPref(this, "notifs").equals("true"));
+		menu_notifs.setChecked(MainUtil.Prefs.getBoolean(this, "notifs", false));
 		return true;
 	}
 }
