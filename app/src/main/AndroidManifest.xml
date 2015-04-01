@@ -19,14 +19,13 @@
 		
 		<activity
             android:name=".ui.Activity_Main"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize|keyboardHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.chteuchteu.gifapplicationlibrary.ui.Super_Activity_Main"/>
 
         <!-- Notifications -->
         <receiver android:name=".serv.BootReceiver" >
